@@ -12,6 +12,10 @@ import { useEffect, useState } from "react";
 import { ResponseType, useAuthRequest } from "expo-auth-session";
 import { useSelector, useDispatch } from 'react-redux';
 import { getToken } from '../reducers/user';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 
 
   const discovery = {
@@ -26,7 +30,9 @@ import { getToken } from '../reducers/user';
 
     //accéder à ce qu'il y a dans le reducer user
     const user = useSelector((state) => state.user.value);
-   
+    const dispatch = useDispatch();
+
+
     const [token, setToken] = useState("");
 
     const [request, response, promptAsync] = 
@@ -56,14 +62,16 @@ import { getToken } from '../reducers/user';
     useEffect(() => {
       if (response?.type === "success") {
         const { access_token } = response.params;
-        console.log("response",response)
+        // console.log("response",response)
         setToken(access_token);
+        dispatch(getToken(access_token))
       }
     }, [response]);
+
+    if (user.isDj && user.token) {
+      navigation.navigate('Recap')}
   
-    console.log(token);
-
-
+    console.log(user);
    
   return (
 <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>

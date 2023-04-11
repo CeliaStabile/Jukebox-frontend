@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: { token: null, username: null , partyName: null, idDj:false},
+  value: { token: null, username: null , partyName: null, isDj:false},
 };
 
 export const userSlice = createSlice({
@@ -9,7 +9,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     djLog: (state, action) => {
-      state.value.idDJ = true;
+      state.value.isDj = true;
     },
     getPartyName: (state, action) => {
         state.value.partyName = action.payload},
@@ -19,7 +19,7 @@ export const userSlice = createSlice({
       state.value.token = null;
       state.value.username = null;
       state.value.partyName = null;
-      state.value.idDj = false;
+      state.value.isDj = false;
     },
   },
 });
