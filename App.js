@@ -7,9 +7,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChoiceScreen from './screens/ChoiceScreen';
 import PlaylistScreen from './screens/PlaylistScreen';
 import SuggestionScreen from './screens/SuggestionScreen';
+import ConnectionScreen from './screens/ConnectionScreen';
+import RecapScreen from './screens/RecapScreen';
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+//redux
+import { Provider } from 'react-redux';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
@@ -29,22 +36,30 @@ const TabNavigator = () => {
       tabBarInactiveTintColor: '#000000',
       headerShown: false,
     })}>
-      <Tab.Screen name="PLAYLIST" component={PlaylistScreen} />
+      <Tab.Screen name="Playlist" component={PlaylistScreen} />
  
-       <Tab.Screen name="SUGGESTION" component={SuggestionScreen} />
+       <Tab.Screen name="Suggestion" component={SuggestionScreen} />
     </Tab.Navigator>
   );
  }
  
+ //config redux store
+ const store = configureStore({
+  reducer: {user},
+ });
 
  //tjr mettre <Stack.Screen name="Home" component={HomeScreen} /> pour afficher la page d'accueil suivi des autres liens si il y en a puis le <Stack.Screen name="TabNavigator" component={TabNavigator} /> pour afficher la tab
  export default function App() {
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Choice" component={ChoiceScreen} /> 
+      <Stack.Screen name="Connection" component={ConnectionScreen} />
+      <Stack.Screen name="Recap" component={RecapScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
  }
