@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {  
   KeyboardAvoidingView, 
   StyleSheet, 
@@ -57,11 +58,11 @@ import {
         <Text style={styles.title}>Choisis ton rôle</Text>
         <View style={styles.containerButton}>        
                 <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ()}} activeOpacity={0.8}>
-                  <FontAwesome name='speaker' size={63} color='#581B98'/>
+                 <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleInvite()}} style={styles.button} activeOpacity={0.8}>
-                  <FontAwesome name='party-popper' size={63} color='#581B98'/>
+                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                  <FontAwesome name='gift' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>INVITE</Text>       
                 </TouchableOpacity>
         </View>
