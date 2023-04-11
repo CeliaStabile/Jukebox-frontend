@@ -10,9 +10,16 @@ import {
   Image,  
   TouchableOpacity, 
   Platform} from 'react-native';
+  import { useDispatch } from 'react-redux';
+  import { djLog } from '../reducers/user';
 
   export default function ChoiceScreen({navigation}) {
    
+  const dispatch = useDispatch();
+  const isDJ = () => {
+    dispatch(djLog());
+  };
+  
    
   return (
 <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -26,6 +33,8 @@ import {
         </View> */}
         <Text style={styles.title}>Choisis ton rôle</Text>
         <View style={styles.containerButton}>        
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ()}} activeOpacity={0.8}>
+                  <FontAwesome name='speaker' size={63} color='#581B98'/>
                 <TouchableOpacity style={styles.button} activeOpacity={0.8}>
                   <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
