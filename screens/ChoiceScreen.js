@@ -26,11 +26,11 @@ import {
         <Text style={styles.title}>Choisis ton rôle</Text>
         <View style={styles.containerButton}>        
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Connection')} activeOpacity={0.8}>
-                  <FontAwesome name='speaker' size={63} color='#581B98'/>
+                  <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                  <FontAwesome name='party-popper' size={63} color='#581B98'/>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Party')} activeOpacity={0.8}>
+                  <FontAwesome name='gift' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>INVITE</Text>       
                 </TouchableOpacity>
         </View>

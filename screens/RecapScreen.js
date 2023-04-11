@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {  
   KeyboardAvoidingView, 
   StyleSheet, 
@@ -10,9 +10,14 @@ import {
   TouchableOpacity, 
   Platform} from 'react-native';
 
-  export default function ConnectionScreen({navigation}) {
+import { updatePlaylist } from '../reducers/user';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+
+
+  export default function RecapScreen({navigation}) {
    
-   
+
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
@@ -24,7 +29,7 @@ import {
           <Text style={styles.titleW}>DJ YANKEE</Text>
         </View>
         <View style={styles.containerButton}>
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => navigation.navigate('TabNavigator')} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
         </View>
