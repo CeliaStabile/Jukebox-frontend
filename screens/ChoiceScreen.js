@@ -39,9 +39,10 @@ import {
       dispatch(getToken(token));
       console.log ('getToken', token);
       console.log('user.token', user.token);
+      navigation.navigate('Party')
                         })
       
-      //navigation.navigate('Playlist')
+      
   };
   console.log('user.token', user.token);
 
