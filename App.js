@@ -51,7 +51,6 @@ const TabNavigator = () => {
  //tjr mettre <Stack.Screen name="Home" component={HomeScreen} /> pour afficher la page d'accueil suivi des autres liens si il y en a puis le <Stack.Screen name="TabNavigator" component={TabNavigator} /> pour afficher la tab
  export default function App() {
   return (
-
     <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
