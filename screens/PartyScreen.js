@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import {  
   KeyboardAvoidingView, 
   StyleSheet, 
@@ -8,14 +7,15 @@ import {
   View, 
   ImageBackground, 
   Image,  
-  TouchableOpacity, 
+  TouchableOpacity,
+  TextInput,
   Platform} from 'react-native';
 
-  export default function ChoiceScreen({navigation}) {
+  export default function ConnectionScreen({navigation}) {
    
    
   return (
-<ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
+    <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         {/* <View style={styles.containerRecap}>
@@ -24,17 +24,27 @@ import {
           <Text style={styles.title}>Connection Spotify</Text>
           <Text style={styles.titleW}>DJ YANKEE</Text>
         </View> */}
-        <Text style={styles.title}>Choisis ton rôle</Text>
-        <View style={styles.containerButton}>        
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                  <FontAwesome name='headphones' size={63} color='#581B98'/>
-                  <Text style={styles.textButton}>DJ</Text>       
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                  <FontAwesome name='gift' size={63} color='#581B98'/>
-                  <Text style={styles.textButton}>INVITE</Text>       
-                </TouchableOpacity>
+        <View style={styles.containerButton}>
+        <Text style={styles.title}>Nom de la soirée</Text>
+        
+
+        
+        <TextInput
+            placeholder="Entre le nom de la soirée"
+            placeholderTextColor="white"
+            autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
+            // onChangeText={(value) => setEmail(value)}
+            // value={email}
+            style={styles.input}
+          />
+
+
+
+          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+            <Text style={styles.textButton}>Go to Party !</Text>
+          </TouchableOpacity>
         </View>
+
       </KeyboardAvoidingView>
     </ImageBackground>
   );
@@ -72,23 +82,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '85%',
-
     paddingTop: 30,
     paddingBottom: 30,
 
   },
   containerButton: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '85%',
+    paddingTop: 30,
+    borderRadius: 1,
+  },
+  input: {
+    placeholderTextColor: 'white',
+    color:'white',
+    width: '80%',
+    height: 40,
+    borderColor: '#FAEE1C', 
+    borderWidth: 1,  
+    marginBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 16,
   },
   button: {
     alignItems: 'center',
-      justifyContent: 'center',
-      width: 150,
-      height: 150,
-      margin: 20,
-      backgroundColor: '#FAEE1C',
-      borderRadius: 20,
+    justifyContent: 'center',
+    width: 310,
+    height: 70,
+    backgroundColor: '#FAEE1C',
+    borderRadius: 30,
   },
   textButton: {
     color: '#581B98',
