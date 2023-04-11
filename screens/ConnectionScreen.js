@@ -25,7 +25,7 @@ import {
         </View> */}
         <View style={styles.containerButton}>
         <Text style={styles.title}>Connection Spotify</Text>
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={0.8}>
+          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Spotify</Text>
           </TouchableOpacity>
         </View>

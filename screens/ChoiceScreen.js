@@ -25,7 +25,7 @@ import {
         </View> */}
         <Text style={styles.title}>Choisis ton rôle</Text>
         <View style={styles.containerButton}>        
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Connection')} activeOpacity={0.8}>
                   <FontAwesome name='speaker' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>
