@@ -19,7 +19,7 @@ import {
     const CLIENT_SECRET = "c9f9ba3556ae4eac86f56fb1823a3631";
     
 
-    const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user.value);
 
   const dispatch = useDispatch();
   const isDJ = () => {
@@ -38,7 +38,7 @@ import {
       const token = data.access_token;
       dispatch(getToken(token));
       console.log ('getToken', token);
-      console.log('user.token', user.token, 'dj', user.isDj);
+      console.log('user.token', user.token);
                         })
       
       //navigation.navigate('Playlist')
@@ -61,7 +61,7 @@ import {
                  <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+                <TouchableOpacity onPress={() => {handleInvite()}} style={styles.button} activeOpacity={0.8}>
                   <FontAwesome name='gift' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>INVITE</Text>       
                 </TouchableOpacity>
