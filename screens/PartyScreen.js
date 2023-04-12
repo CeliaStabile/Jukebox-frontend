@@ -12,8 +12,7 @@ import {
   Platform} from 'react-native';
 
   export default function ConnectionScreen({navigation}) {
-   
-   
+    
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>

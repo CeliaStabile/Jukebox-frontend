@@ -14,10 +14,8 @@ import { updatePlaylist } from '../reducers/user';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-
-  export default function RecapScreen({navigation}) {
+export default function RecapScreen({navigation}) {
    
-
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
