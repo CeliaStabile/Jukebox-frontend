@@ -9,12 +9,14 @@ import {
   Image,  
   TouchableOpacity, 
   Platform} from 'react-native';
+  import { useDispatch, useSelector } from 'react-redux';
+  
 
-import { updatePlaylist } from '../reducers/user';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+  export default function ConnectionScreen({navigation}) {
+   
+    const user = useSelector((state) => state.user.value);
+   
 
-export default function RecapScreen({navigation}) {
    
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -22,7 +24,7 @@ export default function RecapScreen({navigation}) {
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         <View style={styles.containerRecap}>
           <Text style={styles.title}>Nom de la soirée</Text>
-          <Text style={styles.titleW}>DADDY5</Text>
+          <Text style={styles.titleW}>{user.partyName}</Text>
           <Text style={styles.title}>Connection Spotify</Text>
           <Text style={styles.titleW}>DJ YANKEE</Text>
         </View>
