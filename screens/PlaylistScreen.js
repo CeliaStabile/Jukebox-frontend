@@ -105,8 +105,38 @@ export default function PlaylistScreen() {
       <View style={styles.party}>
       <Text style={styles.title}>DADDY5</Text>
       </View>
-      <View style={styles.playnow}>
-      
+      <View style={styles.contentdivider}>
+      <View style={styles.divider1}></View>
+      </View>
+      <View style={styles.playnow}>{
+            users.map((u, i) => (
+            <ListItem key={i} 
+            containerStyle={{
+              backgroundColor:"#F9F9FC", 
+              borderRadius: 20,
+              height: "80%",
+              borderColor: '#F3558E',
+              borderWidth: 2,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.27,
+              shadowRadius: 4.65,
+              elevation: 6,
+              }}>
+                <Avatar source={{uri: u.avatar_url}} />
+                <ListItem.Content style={styles.playnowcontent}>
+                <ListItem.Title style={styles.playnowtitle}>{u.name}</ListItem.Title>
+                <ListItem.Subtitle style={styles.playnowsubtitle}>{u.subtitle}</ListItem.Subtitle>
+                </ListItem.Content>
+            </ListItem>
+            ))
+          }
+      </View>
+      <View style={styles.contentdivider}>
+      <View style={styles.divider2}></View>
       </View>
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
@@ -141,8 +171,8 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       height: '20%',
-      paddingTop: 80,
-      borderRadius: 1,
+      paddingTop: 110,
+      // borderRadius: 1,
     },
     title: {
       fontSize: 32,
@@ -152,18 +182,15 @@ const styles = StyleSheet.create({
     },
     playnow: {
       height: '20%',
-      backgroundColor: 'red',
-      // height: 50,
-      // marginBottom: 50, 
-    },
-    scroll: {
-      
+      // backgroundColor: 'red',
+      // marginBottom: 50,
+      // marginTop: 50,
+      justifyContent: 'center',
+      paddingLeft: 10,
+      paddingRight: 10,
     },
     list: {
       height: '50%',
-      // backgroundColor:'blue',
-      // borderBottomColor: 'red',
-      // borderBottomWidth: 5,
     },
     listitem: {
       borderBottomColor: '#9C1DE7',
@@ -177,6 +204,23 @@ const styles = StyleSheet.create({
     },
     listsubtitle: {
       color: '#49454F',
-    },  
+    },
+    contentdivider: {
+      alignItems: 'center',
+    },
+    divider1:{
+      borderBottomColor: '#F3558E',
+      borderBottomWidth: 1,
+      marginBottom: 20,
+      marginTop: 20,      
+      width: '70%',      
+    },
+    divider2:{
+      borderBottomColor: '#F3558E',
+      borderBottomWidth: 1,
+      marginBottom: 20,
+      // marginTop: 10,     
+      width: '70%',      
+    },
   },
 );
