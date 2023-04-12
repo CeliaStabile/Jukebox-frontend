@@ -17,7 +17,7 @@ export default function SuggestionScreen() {
 <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 
 
-   <Text> SUGGESTION </Text>
+   <Text> PLAYLIST </Text>
 
 </KeyboardAvoidingView>
   );
@@ -26,7 +26,7 @@ export default function SuggestionScreen() {
 const styles = StyleSheet.create({
     container: {
 
-        backgroundColor: 'green',
+        backgroundColor: 'red',
         flex: 1,
     }
   

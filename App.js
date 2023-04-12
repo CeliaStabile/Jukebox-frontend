@@ -28,7 +28,7 @@ const TabNavigator = () => {
         if (route.name === 'Playlist') {
           iconName = 'music';
         } else if (route.name === 'Suggestion') {
-          iconName = 'user';
+          iconName = 'list';
         }
  
         return <FontAwesome name={iconName} size={size} color={color} />;
@@ -37,8 +37,8 @@ const TabNavigator = () => {
       tabBarInactiveTintColor: '#000000',
       headerShown: false,
     })}>
-       <Tab.Screen name="Playlist" component={PlaylistScreen} />
-       <Tab.Screen name="Suggestion" component={SuggestionScreen} />
+      <Tab.Screen name="Playlist" component={PlaylistScreen} /> 
+      <Tab.Screen name="Suggestion" component={SuggestionScreen} />
     </Tab.Navigator>
   );
  }
@@ -56,10 +56,10 @@ const TabNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
         <Stack.Screen name="Choice" component={ChoiceScreen} /> 
-      <Stack.Screen name="Connection" component={ConnectionScreen} />
-      <Stack.Screen name="Recap" component={RecapScreen} />
-      <Stack.Screen name="Party" component={PartyScreen} />
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="Connection" component={ConnectionScreen} />
+        <Stack.Screen name="Recap" component={RecapScreen} />
+        <Stack.Screen name="Party" component={PartyScreen} />
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

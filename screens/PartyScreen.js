@@ -12,7 +12,12 @@ import {
   Platform} from 'react-native';
 
   export default function ConnectionScreen({navigation}) {
-    
+
+    const handleSubmit = () => {
+        navigation.navigate('TabNavigator');
+      };
+   
+   
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
@@ -39,7 +44,7 @@ import {
 
 
 
-          <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => navigation.navigate('TabNavigator')} >
+          <TouchableOpacity onPress={() => {handleSubmit()}} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
         </View>
