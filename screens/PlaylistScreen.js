@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {
     ImageBackground,
     Image,
@@ -20,72 +22,72 @@ export default function PlaylistScreen() {
     const list = [
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
           subtitle: 'Vice President'
         },
         {
           name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice Chairman'
         },
       ]
@@ -93,7 +95,7 @@ export default function PlaylistScreen() {
       const users = [
         {
           name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
           subtitle: 'Vice President'
         },
        ]
@@ -131,6 +133,7 @@ export default function PlaylistScreen() {
                 <ListItem.Title style={styles.playnowtitle}>{u.name}</ListItem.Title>
                 <ListItem.Subtitle style={styles.playnowsubtitle}>{u.subtitle}</ListItem.Subtitle>
                 </ListItem.Content>
+                <FontAwesome name='headphones' size={40} color='#581B98'/>
             </ListItem>
             ))
           }
@@ -199,8 +202,21 @@ const styles = StyleSheet.create({
     listcontent: {
       // backgroundColor: 'pink',
     },
+    playnowtitle:{
+      color: '#1A1C1E',
+      fontSize: 16,
+      fontWeight: '500',
+    },
     listtitle: {
       color: '#1A1C1E',
+      fontSize: 16,
+      fontWeight: '400',
+    },
+    playnowsubtitle: {
+      color: '#1A1C1E',
+      fontSize: 14,
+      fontWeight: '400',
+      textTransform:'uppercase',
     },
     listsubtitle: {
       color: '#49454F',
