@@ -37,8 +37,7 @@ import {
   };
   
   const handlePassword = () => {
-    partyrandom();
-  dispatch(getPartyName(partyrandom()));   
+    dispatch(getPartyName(partyrandom()));   
   }
   
   const handleInvite = () => {
