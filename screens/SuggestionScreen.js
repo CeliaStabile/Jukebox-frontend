@@ -135,10 +135,11 @@ export default function SuggestionScreen() {
 
       {!user.isDj && 
       <View style={styles.searchbar}>
-            <Searchbar            
+            <Searchbar
+             platform="ios"            
              placeholderTextColor={'#49454E'}
-              placeholder="Suggérer un titre ou un artiste"
-              onChangeText={(text) => {
+             placeholder="Suggérer un titre ou un artiste"
+             onChangeText={(text) => {
                   if (searchTimer) {
                       clearTimeout(searchTimer);
                   }
