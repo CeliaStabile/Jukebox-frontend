@@ -17,7 +17,7 @@ import {
    
     const CLIENT_ID = "f23691598dc1491190e048505e50122d";
     const CLIENT_SECRET = "c9f9ba3556ae4eac86f56fb1823a3631";
-    SCOPE = "user-read-playback-state"
+    
     
   const user = useSelector((state) => state.user.value);
 
