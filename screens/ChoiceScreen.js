@@ -21,7 +21,7 @@ import {
   const user = useSelector((state) => state.user.value);
 
   function partyrandom () {
-    const mots =['BadBunny','DaddyYankee','Maluma','Romeo','Adele', 'Jacquouille','LaFripouille','Jeanne','BrunoMars','Disney','Macumba','NickyMinaj','Shaki','RayCharles','Reaggeton','Jazz','RapUs','PatrickSebastien', 'DjSnake', 'Retro', 'FrenchTouch', 'Karaoke', 'DanceHall', 'Rock', 'Soul', 'Blues', 'BossaNova']
+    const mots =['badbunny','daddyyankee','maluma','romeo','adele', 'jacquouille','lafripouille','jeanne','brunoMars','disney','macumba','nickyminaj','shaki','raycharles','reaggeton','jazz','rapus','patricksebastien', 'djsnake', 'retro', 'frenchtouch', 'karaoke', 'dancehall', 'rock', 'soul', 'blues', 'bossaNova']
     const motAleatoire = mots[Math.floor(Math.random() * mots.length)];
     const chiffreAleatoire = Math.floor(Math.random() * 10000);
     const password = motAleatoire + chiffreAleatoire;

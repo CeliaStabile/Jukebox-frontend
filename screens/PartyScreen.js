@@ -19,7 +19,7 @@ import {
     const [partyName, setPartyName] = useState("");
     const [error, setError] = useState(false);
 
-    const frontUrl = 'http://10.6.240.174:3000'
+    const frontUrl = 'http://192.168.43.212:3000'
 
     const handleSubmit = () => {
       fetch(`${frontUrl}/findparty?name=${partyName}`, {
