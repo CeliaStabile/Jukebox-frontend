@@ -137,7 +137,7 @@ export default function SuggestionScreen() {
       <View style={styles.searchbar}>
             <Searchbar            
              placeholderTextColor={'#49454E'}
-              placeholder="Search"
+              placeholder="Suggérer un titre ou un artiste"
               onChangeText={(text) => {
                   if (searchTimer) {
                       clearTimeout(searchTimer);
@@ -162,7 +162,7 @@ export default function SuggestionScreen() {
                 keyExtractor={(item) => "" + item.id}
             />
             <StatusBar style="auto" />
-            <Text style={styles.error}>Ce titre à déjà était proposé 😕</Text>
+            {/* <Text style={styles.error}>Ce titre à déjà était proposé 😕</Text> */}
       </View>
       
       }
@@ -219,13 +219,13 @@ const styles = StyleSheet.create({
     },
     searchbar: {
       // backgroundColor: 'red',
-      // height: '20%',
+      // height: '10%',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingLeft: 10,
-      paddingRight: 10,
-      marginTop: 50,
-      marginBottom: 50,
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginTop: 45,
+      marginBottom: 45,
     },
     list: {
       height: '50%',
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     error:{
       fontSize: 16,
       marginTop: 10,
-      color: 'white',
+      color: '#FAEE1C',
     }
   },
 );

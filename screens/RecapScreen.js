@@ -14,7 +14,7 @@ import {
 
   export default function ConnectionScreen({navigation}) {
    
-    const frontUrl = 'http://192.168.43.212:3000'
+    const frontUrl = 'http://10.6.23.21:3000'
     const user = useSelector((state) => state.user.value);
     
     const handleSubmit = () => {
