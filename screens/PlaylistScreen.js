@@ -152,8 +152,6 @@ export default function PlaylistScreen() {
                 <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
                 </ListItem.Content>
-                <Text style={styles.count}>0</Text>
-                <FontAwesome name='heart-o' size={30} color='#F3558E'/>
             </ListItem>
             ))
           }
