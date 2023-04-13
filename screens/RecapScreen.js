@@ -15,7 +15,10 @@ import {
   export default function ConnectionScreen({navigation}) {
    
     const user = useSelector((state) => state.user.value);
-   
+    
+    const handleSubmit = () => {
+      navigation.navigate('TabNavigator');
+    };
 
    
   return (
