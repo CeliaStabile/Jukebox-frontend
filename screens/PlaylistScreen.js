@@ -113,10 +113,10 @@ export default function PlaylistScreen() {
       <View style={styles.playnow}>{
             users.map((u, i) => (
             <ListItem key={i} 
-            containerStyle={{
+            containerStyle={{              
               backgroundColor:"#F9F9FC", 
               borderRadius: 20,
-              height: "80%",
+              // height: "80%",
               borderColor: '#F3558E',
               borderWidth: 2,
               shadowColor: "#000",
@@ -150,6 +150,8 @@ export default function PlaylistScreen() {
                 <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
                 </ListItem.Content>
+                <Text style={styles.count}>0</Text>
+                <FontAwesome name='heart-o' size={30} color='#F3558E'/>
             </ListItem>
             ))
           }
@@ -171,17 +173,19 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between'
     },
     party: {
+      // backgroundColor: 'red',
+      display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       height: '20%',
-      paddingTop: 110,
+      // paddingTop: 110,
       // borderRadius: 1,
     },
     title: {
       fontSize: 32,
       fontWeight: '600',
       marginBottom: 20,
-      color: '#9C1DE7',
+      color: '#581B98',
     },
     playnow: {
       height: '20%',
@@ -221,13 +225,19 @@ const styles = StyleSheet.create({
     listsubtitle: {
       color: '#49454F',
     },
+    count: {
+      color: '#1A1C1E',
+      fontSize: 18,
+      fontWeight: '400',
+    },
     contentdivider: {
       alignItems: 'center',
+      heigh: '10%',
     },
     divider1:{
       borderBottomColor: '#F3558E',
       borderBottomWidth: 1,
-      marginBottom: 20,
+      // marginBottom: 20,
       marginTop: 20,      
       width: '70%',      
     },
