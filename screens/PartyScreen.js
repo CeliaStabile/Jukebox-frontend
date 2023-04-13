@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
   input: {
-    placeholderTextColor: 'white',
+    // placeholderTextColor: 'white',
     color:'white',
     width: '80%',
     height: 40,

@@ -18,9 +18,12 @@ import {
     ScrollView,
     FlatList,
   } from 'react-native';
+  import { useSelector, useDispatch } from 'react-redux';
+
 
 
 export default function SuggestionScreen() {
+  const user = useSelector((state) => state.user.value);
     
     const list = [
         {
@@ -123,11 +126,14 @@ export default function SuggestionScreen() {
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.party}>
-      <Text style={styles.title}>Ajoute ton morceau</Text>
+      {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
+      {user.isDj && <Text style={styles.title}>Swipe 👈 ou 👉</Text>}
       </View>
       <View style={styles.contentdivider}>
       <View style={styles.divider1}></View>
       </View>
+
+      {!user.isDj && 
       <View style={styles.searchbar}>
             <Searchbar            
              placeholderTextColor={'#49454E'}
@@ -157,6 +163,9 @@ export default function SuggestionScreen() {
             />
             <StatusBar style="auto" />
       </View>
+      }
+
+
       <View style={styles.contentdivider}>
       <View style={styles.divider2}></View>
       </View>
