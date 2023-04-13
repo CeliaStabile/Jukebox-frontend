@@ -14,13 +14,23 @@ import {
 
   export default function ConnectionScreen({navigation}) {
    
+    const frontUrl = 'http://192.168.43.212:3000'
     const user = useSelector((state) => state.user.value);
     
     const handleSubmit = () => {
+      if(user.isDj && user.partyName){
+      fetch(`${frontUrl}/newparty`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+           name: user.partyName,
+           })
+      }).then(response => response.json())
       navigation.navigate('TabNavigator');
-    };
+    }
+  };
+    
 
-   
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>

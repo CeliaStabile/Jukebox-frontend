@@ -15,10 +15,12 @@ import {
     TouchableOpacity,
     ScrollView,
   } from 'react-native';
+  import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function PlaylistScreen() {
-    
+  const user = useSelector((state) => state.user.value);
+
     const list = [
         {
           name: 'Amy Farha',
@@ -105,7 +107,7 @@ export default function PlaylistScreen() {
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.party}>
-      <Text style={styles.title}>DADDY5</Text>
+      <Text style={styles.title}>{user.partyName}</Text>
       </View>
       <View style={styles.contentdivider}>
       <View style={styles.divider1}></View>

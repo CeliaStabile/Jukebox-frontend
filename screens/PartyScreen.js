@@ -10,14 +10,33 @@ import {
   TouchableOpacity,
   TextInput,
   Platform} from 'react-native';
+  import { useSelector, useDispatch } from 'react-redux';
+  import { getPartyName } from '../reducers/user';
 
   export default function ConnectionScreen({navigation}) {
+    const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
+    const [partyName, setPartyName] = useState("");
+    const [error, setError] = useState(false);
+
+    const frontUrl = 'http://192.168.43.212:3000'
 
     const handleSubmit = () => {
-        navigation.navigate('TabNavigator');
+      fetch(`${frontUrl}/findparty?name=${partyName}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          navigation.navigate('TabNavigator');
+          dispatch(getPartyName(partyName));
+        } else {
+          setError(true)
+        }
+      });
       };
-   
-   
+   console.log(user);
+
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
@@ -37,16 +56,14 @@ import {
             placeholder="Entre le nom de la soirée"
             placeholderTextColor="white"
             autoCapitalize="none" // https://reactnative.dev/docs/textinput#autocapitalize
-            // onChangeText={(value) => setEmail(value)}
-            // value={email}
+            onChangeText={(value) => setPartyName(value)}
+            value={partyName}
             style={styles.input}
           />
-
-
-
           <TouchableOpacity onPress={() => {handleSubmit()}} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
+          {error && <Text style={styles.error}>Cette soirée n'existe pas 😖</Text>}
         </View>
 
       </KeyboardAvoidingView>
@@ -122,4 +139,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 28,
   },
+  error:{
+    fontSize: 16,
+    marginTop: 10,
+    color: 'white',
+  }
 });
