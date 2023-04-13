@@ -85,7 +85,8 @@ import { useNavigation } from '@react-navigation/native';
         </View> */}
         <View style={styles.containerButton}>
         <Text style={styles.title}>Connection Spotify</Text>
-        <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => {
+          <View style={styles.divider}></View>  
+          <TouchableOpacity style={styles.button} activeOpacity={0.8}  onPress={() => {
           promptAsync();
         }}>
             <Text style={styles.textButton}>Spotify</Text>
@@ -151,5 +152,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 28,
+  },
+  divider:{
+    borderBottomColor: '#F3558E',
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    // marginTop: 20,      
+    width: '90%',      
   },
 });
