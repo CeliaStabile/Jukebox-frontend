@@ -70,6 +70,7 @@ import {
           <Text style={styles.titleW}>DJ YANKEE</Text>
         </View> */}
         <Text style={styles.title}>Choisis ton rôle</Text>
+        <View style={styles.divider}></View>
         <View style={styles.containerButton}>        
                 <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ(), handlePassword() }} activeOpacity={0.8}>
                  <FontAwesome name='headphones' size={63} color='#581B98'/>
@@ -139,5 +140,12 @@ const styles = StyleSheet.create({
     color: '#581B98',
     fontWeight: '600',
     fontSize: 28,
+  },
+  divider:{
+    borderBottomColor: '#F3558E',
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    // marginTop: 20,      
+    width: '70%',      
   },
 });

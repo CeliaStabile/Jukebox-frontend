@@ -49,6 +49,7 @@ import {
         </View> */}
         <View style={styles.containerButton}>
         <Text style={styles.title}>Nom de la soirée</Text>
+        <View style={styles.divider}></View>
         
 
         
@@ -116,8 +117,9 @@ const styles = StyleSheet.create({
   },
   input: {
     // placeholderTextColor: 'white',
+    borderRadius: 5,
     color:'white',
-    width: '80%',
+    width: '90%',
     height: 40,
     borderColor: '#FAEE1C', 
     borderWidth: 1,  
@@ -143,5 +145,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     color: 'white',
-  }
+  },
+  divider:{
+    borderBottomColor: '#F3558E',
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    // marginTop: 20,      
+    width: '80%',      
+  },
 });
