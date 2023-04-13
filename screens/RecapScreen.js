@@ -14,7 +14,7 @@ import {
 
   export default function ConnectionScreen({navigation}) {
    
-    const frontUrl = 'http://10.6.23.21:3000'
+    const frontUrl = 'https://jukebox-backend.vercel.app'
     const user = useSelector((state) => state.user.value);
     
     const handleSubmit = () => {
@@ -39,7 +39,7 @@ import {
           <Text style={styles.title}>Nom de la soirée</Text>
           <Text style={styles.titleW}>{user.partyName}</Text>
           <Text style={styles.title}>Connection Spotify</Text>
-          <Text style={styles.titleW}>DJ YANKEE</Text>
+          <Text style={styles.titleW}>tu es connecté(e)</Text>
         </View>
         <View style={styles.containerButton}>
           <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={0.8}>
