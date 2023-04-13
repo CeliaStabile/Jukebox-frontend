@@ -19,7 +19,7 @@ import {
     const [partyName, setPartyName] = useState("");
     const [error, setError] = useState(false);
 
-    const frontUrl = 'http://192.168.43.212:3000'
+    const frontUrl = 'https://jukebox-backend.vercel.app'
 
     const handleSubmit = () => {
       fetch(`${frontUrl}/findparty?name=${partyName}`, {
