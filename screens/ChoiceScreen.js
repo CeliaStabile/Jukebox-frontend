@@ -79,7 +79,7 @@ import {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Party')} activeOpacity={0.8}>
                   <FontAwesome name='gift' size={63} color='#581B98'/>
-                  <Text style={styles.textButton}>INVITE</Text>       
+                  <Text style={styles.textButton}>INVITÉ</Text>       
                 </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
