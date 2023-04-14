@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -20,6 +20,64 @@ import {
 
 export default function PlaylistScreen() {
   const user = useSelector((state) => state.user.value);
+
+  // if(user.isDj){
+  //   useEffect(() => {
+  //     fetch('https://api.spotify.com/v1/me/player/queue', {
+  //       headers: {
+  //         Authorization: 'Bearer ' + user.token,
+  //       },
+  //     })
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         console.log("résultat :", data)})
+  //       //   const tracks = data.items.map(item => ({
+  //       //     artistname: item.track.artists[0].name,
+  //       //     songname: item.track.name,
+  //       //     imageUrl: item.track.album.images[0].url,
+  //       //     trackUri: item.track.uri,
+  //       //   }));
+  //       //   fetch('/your-backend-endpoint', {
+  //       //     method: 'POST',
+  //       //     headers: {
+  //       //       'Content-Type': 'application/json',
+  //       //     },
+  //       //     body: JSON.stringify(tracks),
+  //       //   })
+  //       //     .then(response => response.json())
+  //       //     .then(data => console.log(data))
+  //       //     .catch(error => console.error(error));
+  //       // })
+  //       // .catch(error => console.error(error));
+  //   }, []);
+  // }
+
+  if (user.isDj) {
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        fetch('https://api.spotify.com/v1/me/player/queue', {
+          headers: {
+            Authorization: 'Bearer ' + user.token,
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.queue);
+            const result = data.queue
+        //     const tracks = result.map(item => ({
+        //       title : item.name,
+        //       artist : item.artist[0].name,
+        //       url_image: item.album.images[2].url,
+        //       uri: item.uri
+        //     }))
+        // console.log("queue :",tracks)
+          })
+          .catch(error => console.error(error));
+      }, 10000); // 10 seconds in milliseconds
+  
+      return () => clearInterval(intervalId);
+    }, []);
+  }
 
     const list = [
         {
