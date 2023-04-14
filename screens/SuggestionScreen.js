@@ -215,7 +215,7 @@ export default function SuggestionScreen() {
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
                 </ListItem.Content>
 
-                <LikeButton />
+                {!user.isDj &&<LikeButton />}
 
                 
 
