@@ -169,7 +169,7 @@ export default function SuggestionScreen() {
                 )}
                 keyExtractor={(item) => "" + item.id}
             />
-            {/* <StatusBar style="auto" /> */}
+            <StatusBar style="auto" />
             <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
       </View>
       
