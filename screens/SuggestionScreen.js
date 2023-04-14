@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Searchbar } from 'react-native-paper';
 import { StatusBar } from "expo-status-bar";
+import SwipeListView from 'react-native-swipe-list-view';
 
 import {
     ImageBackground,
@@ -288,6 +289,7 @@ const styles = StyleSheet.create({
       width: '70%',      
     },
     error:{
+      alignItems: 'center',
       fontSize: 16,
       marginTop: 10,
       color: '#FAEE1C',
