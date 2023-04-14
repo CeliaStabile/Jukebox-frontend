@@ -19,10 +19,10 @@ import {
     const [partyName, setPartyName] = useState("");
     const [error, setError] = useState(false);
 
-    const frontUrl = 'https://jukebox-backend.vercel.app'
+    const backendUrl = 'https://jukebox-backend.vercel.app'
 
     const handleSubmit = () => {
-      fetch(`${frontUrl}/findparty?name=${partyName}`, {
+      fetch(`${backendUrl}/findparty?name=${partyName}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       }).then(response => response.json())
