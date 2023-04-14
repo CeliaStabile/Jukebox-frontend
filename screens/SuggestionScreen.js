@@ -108,19 +108,24 @@ export default function SuggestionScreen() {
 
        const [input, setInput] = useState("");
        const [results, setResults] = useState([]);
-       const [searchTimer, setSearchTimer] = useState(null);
+       const [search, setSearch] = useState("");
+
+       const updateSearch = (search) => {
+        setSearch(search);
+      };
+      //  const [searchTimer, setSearchTimer] = useState(null);
    
-       async function fetchData(text) {
-           const res = await fetch(
-               `https://demo.wp-api.org/wp-json/wp/v2/posts?_embed&search=${text}`,
-           );
-           res
-               .json()
-               .then((res) => {
-                   setResults(res);
-               })
-               .catch((err) => console.log(err));
-       }
+      //  async function fetchData(text) {
+      //      const res = await fetch(
+      //          `https://demo.wp-api.org/wp-json/wp/v2/posts?_embed&search=${text}`,
+      //      );
+      //      res
+      //          .json()
+      //          .then((res) => {
+      //              setResults(res);
+      //          })
+      //          .catch((err) => console.log(err));
+      //  }
     
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -136,21 +141,23 @@ export default function SuggestionScreen() {
       {!user.isDj && 
       <View style={styles.searchbar}>
             <Searchbar
-             platform="ios"            
-             placeholderTextColor={'#49454E'}
-             placeholder="Suggérer un titre ou un artiste"
-             onChangeText={(text) => {
-                  if (searchTimer) {
-                      clearTimeout(searchTimer);
-                  }
-                  setInput(text);
-                  setSearchTimer(
-                      setTimeout(() => {
-                          fetchData(text);
-                      }, 2000),
-                  );
-              }}
-              value={input}
+              platform="default"            
+              placeholderTextColor={'#49454E'}
+              placeholder="Suggérer un titre ou un artiste"
+              onChangeText={updateSearch}
+              
+              // {(text) => {
+              //       if (searchTimer) {
+              //           clearTimeout(searchTimer);
+              //       }
+              //       setInput(text);
+              //       setSearchTimer(
+              //           setTimeout(() => {
+              //               fetchData(text);
+              //           }, 2000),
+              //       );
+              //   }}
+               value={search}
             />
             <FlatList
                 data={results}
