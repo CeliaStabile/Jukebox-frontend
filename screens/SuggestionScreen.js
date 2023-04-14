@@ -288,6 +288,7 @@ const styles = StyleSheet.create({
       width: '70%',      
     },
     error:{
+      alignItems: 'center',
       fontSize: 16,
       marginTop: 10,
       color: '#FAEE1C',
