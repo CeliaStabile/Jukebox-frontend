@@ -144,7 +144,7 @@ export default function SuggestionScreen() {
               platform="default"            
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
-              onChangeText={text}
+              onChangeText={updateSearch}
               
               // {(text) => {
               //       if (searchTimer) {
