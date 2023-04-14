@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Searchbar } from 'react-native-paper';
 import { StatusBar } from "expo-status-bar";
-import SwipeListView from 'react-native-swipe-list-view';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import {
     ImageBackground,
@@ -25,79 +25,81 @@ import {
 
 export default function SuggestionScreen() {
   const user = useSelector((state) => state.user.value);
+  const [list, setList] = useState([
+
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    },
+    {
+      name: 'Amy Farha',
+      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+      subtitle: 'Vice President'
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      subtitle: 'Vice Chairman'
+    }
     
-    const list = [
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-          name: 'Chris Jackson',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice Chairman'
-        },
-      ]
+  ]);
+ 
 
     const users = [
         {
@@ -107,6 +109,7 @@ export default function SuggestionScreen() {
         },
        ]
 
+      
        const [input, setInput] = useState("");
        const [results, setResults] = useState([]);
        const [search, setSearch] = useState("");
@@ -114,6 +117,12 @@ export default function SuggestionScreen() {
        const updateSearch = (search) => {
         setSearch(search);
       };
+
+      const handleDelete = (index) => {
+        const newList = list.filter((_, i) => i !== index);
+        setList(newList);
+      };
+      
       //  const [searchTimer, setSearchTimer] = useState(null);
    
       //  async function fetchData(text) {
@@ -180,12 +189,22 @@ export default function SuggestionScreen() {
       }
 
       <View style={styles.contentdivider}>
-        <View style={styles.divider2}></View>
+        <View style={styles.divider2}>   
+        </View>
       </View>
 
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
-            list.map((l, i) => (
+            list.map((l, i) => ( 
+            <Swipeable
+              renderRightActions={(index) => (
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+                <View style={styles.rightSwipeItem} >
+                </View>
+                </TouchableOpacity>
+              )}
+              onSwipeableRightOpen={() => { handleDelete(i);
+              }} >
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.avatar_url}} />
                 <ListItem.Content style={styles.listcontent}>
@@ -195,10 +214,14 @@ export default function SuggestionScreen() {
                 <Text style={styles.count}>0</Text>
                 <FontAwesome name='heart-o' size={30} color='#F3558E'/>
             </ListItem>
+            </Swipeable>
             ))
           }
         </View>
       </ScrollView>
+
+
+
       </KeyboardAvoidingView>
       </ImageBackground>
     
@@ -283,6 +306,9 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginTop: 10,
       color: '#FAEE1C',
+    },
+    rightSwipeItem: {
+      width: 1,
     }
   },
 );
