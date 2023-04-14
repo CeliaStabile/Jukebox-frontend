@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     searchbar: {
       backgroundColor: 'red',
       // height: '10%',
-      // alignItems: 'center',
+      alignItems: 'center',
       // justifyContent: 'center',
       paddingLeft: 20,
       paddingRight: 20,
