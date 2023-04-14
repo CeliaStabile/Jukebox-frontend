@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {  
   KeyboardAvoidingView, 
   StyleSheet, 
@@ -46,7 +46,7 @@ import {
           <Text style={styles.titleW}>tu es connecté(e)</Text>
         </View>
         <View style={styles.containerButton}>
-          <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => navigation.navigate('TabNavigator')} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
         </View>

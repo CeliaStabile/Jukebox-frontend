@@ -1,4 +1,4 @@
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -54,6 +54,7 @@ const TabNavigator = () => {
     <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+
         <Stack.Screen name="Choice" component={ChoiceScreen} /> 
         <Stack.Screen name="Connection" component={ConnectionScreen} />
         <Stack.Screen name="Recap" component={RecapScreen} />

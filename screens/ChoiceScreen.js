@@ -15,8 +15,9 @@ import {
 
   export default function ChoiceScreen({navigation}) {
    
-    const CLIENT_ID = "f23691598dc1491190e048505e50122d";
-    const CLIENT_SECRET = "c9f9ba3556ae4eac86f56fb1823a3631";
+    const CLIENT_ID = "c6d8fa104582425a99c8ee0bc153f202";
+    const CLIENT_SECRET = "5c876fea03f1440995028805f694cf14";
+    
     
   const user = useSelector((state) => state.user.value);
 
@@ -76,7 +77,7 @@ import {
                  <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleInvite()}} style={styles.button} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Party')} activeOpacity={0.8}>
                   <FontAwesome name='gift' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>INVITÉ</Text>       
                 </TouchableOpacity>

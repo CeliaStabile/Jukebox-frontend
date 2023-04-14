@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Searchbar } from 'react-native-paper';
 import { StatusBar } from "expo-status-bar";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import {
     ImageBackground,
@@ -19,6 +20,7 @@ import {
     FlatList,
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
+  import LikeButton from '../componements/likeButton';
 
  
 export default function SuggestionScreen() {
@@ -188,25 +190,43 @@ async function recherche(value) {
       }
 
       <View style={styles.contentdivider}>
-        <View style={styles.divider2}></View>
+        <View style={styles.divider2}>   
+        </View>
       </View>
 
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
             suggestion.map((l, i) => (
+                        <Swipeable
+              renderRightActions={(index) => (
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+                <View style={styles.rightSwipeItem} >
+                </View>
+                </TouchableOpacity>
+              )}
+              onSwipeableRightOpen={() => { handleDelete(i);
+              }} >
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.url_image}} />
                 <ListItem.Content style={styles.listcontent}>
                 <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
-                <Text style={styles.count}>0</Text>
-                <FontAwesome name='heart-o' size={30} color='#F3558E'/>
+
+                <LikeButton />
+
+                
+
+
             </ListItem>
+            </Swipeable>
             ))
           }
         </View>
       </ScrollView>
+
+
+
       </KeyboardAvoidingView>
       </ImageBackground>
     
@@ -291,6 +311,9 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginTop: 10,
       color: '#FAEE1C',
+    },
+    rightSwipeItem: {
+      width: 1,
     }
   },
 );
