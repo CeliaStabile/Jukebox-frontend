@@ -14,12 +14,12 @@ import {
 
   export default function ConnectionScreen({navigation}) {
    
-    const frontUrl = 'https://jukebox-backend.vercel.app'
+    const backendUrl = 'https://jukebox-backend.vercel.app'
     const user = useSelector((state) => state.user.value);
     
     const handleSubmit = () => {
       if(user.isDj && user.partyName){
-      fetch(`${frontUrl}/newparty`, {
+      fetch(`${backendUrl}/newparty`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

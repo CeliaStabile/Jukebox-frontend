@@ -213,7 +213,7 @@ async function recherche(value) {
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
 
-                <LikeButton />
+                {!user.isDj &&<LikeButton />}
 
                 
 

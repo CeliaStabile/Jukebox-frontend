@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: { token: null, username: null , partyName: null, isDj:false},
+  value: { token: null , partyName: null, isDj:false},
 };
 
 export const userSlice = createSlice({
