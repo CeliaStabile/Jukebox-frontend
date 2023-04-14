@@ -5868,6 +5868,11 @@ react-native-paper@^5.6.0:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
+react-native-platform-searchbar@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-platform-searchbar/-/react-native-platform-searchbar-1.2.3.tgz#f68bf245d64d0b96c841625eb4db4bf7e85532ed"
+  integrity sha512-8ggTtAl9B422ogkGv/Ic4is0RB6TcR8nXanvwf71454rSmhTuvy5yuW8LFO3+g7FCTE7Abd7ysOkP9rcWqGaaw==
+
 react-native-ratings@8.0.4:
   version "8.0.4"
   resolved "https://registry.npmjs.org/react-native-ratings/-/react-native-ratings-8.0.4.tgz"
