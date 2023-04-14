@@ -201,7 +201,7 @@ export default function SuggestionScreen() {
             list.map((l, i) => ( 
             <Swipeable
               renderRightActions={(index) => (
-                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)} >
                 <View style={styles.rightSwipeItem} >
                 </View>
                 </TouchableOpacity>
