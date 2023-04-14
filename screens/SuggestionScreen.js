@@ -135,8 +135,9 @@ export default function SuggestionScreen() {
       {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
       {user.isDj && <Text style={styles.title}>Swipe 👈 ou 👉</Text>}
       </View>
+
       <View style={styles.contentdivider}>
-      <View style={styles.divider1}></View>
+        <View style={styles.divider1}></View>
       </View>
 
       {!user.isDj && 
@@ -171,15 +172,17 @@ export default function SuggestionScreen() {
                 keyExtractor={(item) => "" + item.id}
             />
             <StatusBar style="auto" />
-            <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
+            <View style={styles.errorphrase}>
+              <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
+            </View>
       </View>
       
       }
 
-
       <View style={styles.contentdivider}>
-      <View style={styles.divider2}></View>
+        <View style={styles.divider2}></View>
       </View>
+
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
             list.map((l, i) => (
@@ -217,8 +220,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-end',
       height: '20%',
-      // paddingTop: 110,
-      // borderRadius: 1,
     },
     title: {
       fontSize: 32,
@@ -228,8 +229,6 @@ const styles = StyleSheet.create({
     },
     searchbar: {
       // backgroundColor: 'red',
-      // height: '10%',
-      // alignItems: 'center',
       justifyContent: 'center',
       paddingLeft: 20,
       paddingRight: 20,
@@ -246,21 +245,10 @@ const styles = StyleSheet.create({
     listcontent: {
       // backgroundColor: 'pink',
     },
-    playnowtitle:{
-      color: '#1A1C1E',
-      fontSize: 16,
-      fontWeight: '500',
-    },
     listtitle: {
       color: '#1A1C1E',
       fontSize: 16,
       fontWeight: '400',
-    },
-    playnowsubtitle: {
-      color: '#1A1C1E',
-      fontSize: 14,
-      fontWeight: '400',
-      textTransform:'uppercase',
     },
     listsubtitle: {
       color: '#49454F',
@@ -288,8 +276,10 @@ const styles = StyleSheet.create({
       // marginTop: 10,     
       width: '70%',      
     },
-    error:{
+    errorphrase: {
       alignItems: 'center',
+    },
+    error:{
       fontSize: 16,
       marginTop: 10,
       color: '#FAEE1C',
