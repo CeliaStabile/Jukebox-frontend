@@ -226,10 +226,10 @@ const styles = StyleSheet.create({
       color: '#581B98',
     },
     searchbar: {
-      // backgroundColor: 'red',
+      backgroundColor: 'red',
       // height: '10%',
-      alignItems: 'center',
-      justifyContent: 'center',
+      // alignItems: 'center',
+      // justifyContent: 'center',
       paddingLeft: 20,
       paddingRight: 20,
       marginTop: 45,
