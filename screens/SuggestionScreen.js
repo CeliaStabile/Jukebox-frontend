@@ -169,7 +169,7 @@ export default function SuggestionScreen() {
                 )}
                 keyExtractor={(item) => "" + item.id}
             />
-            {/* <StatusBar style="auto" /> */}
+            <StatusBar style="auto" />
             <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
       </View>
       
@@ -226,10 +226,10 @@ const styles = StyleSheet.create({
       color: '#581B98',
     },
     searchbar: {
-      // backgroundColor: 'red',
+      backgroundColor: 'red',
       // height: '10%',
-      alignItems: 'center',
-      justifyContent: 'center',
+      // alignItems: 'center',
+      // justifyContent: 'center',
       paddingLeft: 20,
       paddingRight: 20,
       marginTop: 45,
