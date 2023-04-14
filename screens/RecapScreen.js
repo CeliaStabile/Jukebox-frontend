@@ -36,9 +36,13 @@ import {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         <View style={styles.containerRecap}>
-          <Text style={styles.title}>Nom de la soirée</Text>
+          <Text style={styles.title}>Nom de la soirée</Text>          
+            <View style={styles.divider}></View>          
           <Text style={styles.titleW}>{user.partyName}</Text>
+          </View>
+          <View style={styles.containerRecap}>
           <Text style={styles.title}>Connection Spotify</Text>
+            <View style={styles.divider}></View>
           <Text style={styles.titleW}>tu es connecté(e)</Text>
         </View>
         <View style={styles.containerButton}>
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
   titleW: {
     fontSize: 32,
       fontWeight: '600',
-      marginBottom: 20,
+      marginTop: 20,
       color: '#FFFFFF'
   },
   containerRecap: {
@@ -108,5 +112,12 @@ const styles = StyleSheet.create({
     color: '#581B98',
     fontWeight: '600',
     fontSize: 28,
+  },
+  divider:{
+    borderBottomColor: '#F3558E',
+    borderBottomWidth: 1,
+    // marginBottom: 20,
+    // marginTop: 20,      
+    width: '90%',      
   },
 });

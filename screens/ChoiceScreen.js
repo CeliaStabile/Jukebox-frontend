@@ -21,7 +21,7 @@ import {
   const user = useSelector((state) => state.user.value);
 
   function partyrandom () {
-    const mots =['BadBunny','DaddyYankee','Maluma','Romeo','Adele', 'Jacquouille','LaFripouille','Jeanne','BrunoMars','Disney','Macumba','NickyMinaj','Shaki','RayCharles','Reaggeton','Jazz','RapUs','PatrickSebastien', 'DjSnake', 'Retro', 'FrenchTouch', 'Karaoke', 'DanceHall', 'Rock', 'Soul', 'Blues', 'BossaNova']
+    const mots =['badbunny','daddyyankee','maluma','romeo','adele', 'jacquouille','lafripouille','jeanne','brunoMars','disney','macumba','nickyminaj','shaki','raycharles','reaggeton','jazz','rapus','patricksebastien', 'djsnake', 'retro', 'frenchtouch', 'karaoke', 'dancehall', 'rock', 'soul', 'blues', 'bossaNova']
     const motAleatoire = mots[Math.floor(Math.random() * mots.length)];
     const chiffreAleatoire = Math.floor(Math.random() * 10000);
     const password = motAleatoire + chiffreAleatoire;
@@ -37,8 +37,7 @@ import {
   };
   
   const handlePassword = () => {
-    partyrandom();
-  dispatch(getPartyName(partyrandom()));   
+    dispatch(getPartyName(partyrandom()));   
   }
   
   const handleInvite = () => {
@@ -71,6 +70,7 @@ import {
           <Text style={styles.titleW}>DJ YANKEE</Text>
         </View> */}
         <Text style={styles.title}>Choisis ton rôle</Text>
+        <View style={styles.divider}></View>
         <View style={styles.containerButton}>        
                 <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ(), handlePassword() }} activeOpacity={0.8}>
                  <FontAwesome name='headphones' size={63} color='#581B98'/>
@@ -140,5 +140,12 @@ const styles = StyleSheet.create({
     color: '#581B98',
     fontWeight: '600',
     fontSize: 28,
+  },
+  divider:{
+    borderBottomColor: '#F3558E',
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    // marginTop: 20,      
+    width: '70%',      
   },
 });

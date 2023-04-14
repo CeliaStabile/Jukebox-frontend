@@ -108,19 +108,24 @@ export default function SuggestionScreen() {
 
        const [input, setInput] = useState("");
        const [results, setResults] = useState([]);
-       const [searchTimer, setSearchTimer] = useState(null);
+       const [search, setSearch] = useState("");
+
+       const updateSearch = (search) => {
+        setSearch(search);
+      };
+      //  const [searchTimer, setSearchTimer] = useState(null);
    
-       async function fetchData(text) {
-           const res = await fetch(
-               `https://demo.wp-api.org/wp-json/wp/v2/posts?_embed&search=${text}`,
-           );
-           res
-               .json()
-               .then((res) => {
-                   setResults(res);
-               })
-               .catch((err) => console.log(err));
-       }
+      //  async function fetchData(text) {
+      //      const res = await fetch(
+      //          `https://demo.wp-api.org/wp-json/wp/v2/posts?_embed&search=${text}`,
+      //      );
+      //      res
+      //          .json()
+      //          .then((res) => {
+      //              setResults(res);
+      //          })
+      //          .catch((err) => console.log(err));
+      //  }
     
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -135,21 +140,24 @@ export default function SuggestionScreen() {
 
       {!user.isDj && 
       <View style={styles.searchbar}>
-            <Searchbar            
-             placeholderTextColor={'#49454E'}
-              placeholder="Search"
-              onChangeText={(text) => {
-                  if (searchTimer) {
-                      clearTimeout(searchTimer);
-                  }
-                  setInput(text);
-                  setSearchTimer(
-                      setTimeout(() => {
-                          fetchData(text);
-                      }, 2000),
-                  );
-              }}
-              value={input}
+            <Searchbar
+              platform="default"            
+              placeholderTextColor={'#49454E'}
+              placeholder="Suggérer un titre ou un artiste"
+              onChangeText={updateSearch}
+              
+              // {(text) => {
+              //       if (searchTimer) {
+              //           clearTimeout(searchTimer);
+              //       }
+              //       setInput(text);
+              //       setSearchTimer(
+              //           setTimeout(() => {
+              //               fetchData(text);
+              //           }, 2000),
+              //       );
+              //   }}
+               value={search}
             />
             <FlatList
                 data={results}
@@ -219,13 +227,13 @@ const styles = StyleSheet.create({
     },
     searchbar: {
       // backgroundColor: 'red',
-      // height: '20%',
-      alignItems: 'center',
+      // height: '10%',
+      // alignItems: 'center',
       justifyContent: 'center',
-      paddingLeft: 10,
-      paddingRight: 10,
-      marginTop: 50,
-      marginBottom: 50,
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginTop: 45,
+      marginBottom: 45,
     },
     list: {
       height: '50%',
@@ -280,9 +288,10 @@ const styles = StyleSheet.create({
       width: '70%',      
     },
     error:{
+      alignItems: 'center',
       fontSize: 16,
       marginTop: 10,
-      color: 'white',
+      color: '#FAEE1C',
     }
   },
 );

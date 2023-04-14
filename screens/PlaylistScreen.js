@@ -290,13 +290,13 @@ const styles = StyleSheet.create({
     },
     contentdivider: {
       alignItems: 'center',
-      heigh: '10%',
+      heigh: '5%',
     },
     divider1:{
       borderBottomColor: '#F3558E',
       borderBottomWidth: 1,
       // marginBottom: 20,
-      marginTop: 20,      
+      // marginTop: 20,      
       width: '70%',      
     },
     divider2:{
