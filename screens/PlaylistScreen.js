@@ -112,6 +112,63 @@ export default function PlaylistScreen() {
     }, 3000);
   }, []);
 
+ // console.log les queueItems et now a chaque changement pour débuggage
+  // useEffect(() => {
+  //   if (queueItems.length > 0) {
+  //     console.log("queueItems", queueItems);
+  //   }
+  // }, [queueItems]);
+
+  // useEffect(() => {
+  //   if(nowPlaying !== ''){
+  //   console.log("now playing", nowPlaying);
+  // }
+  // }, [nowPlaying]);
+
+
+//list en dur de la queue
+    // const list = [
+    //     {
+    //       name: 'Amy Farha',
+    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+    //       subtitle: 'Vice President'
+    //     },
+    //     {
+    //       name: 'Chris Jackson',
+    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+    //       subtitle: 'Vice Chairman'
+    //     },
+    //     {
+    //       name: 'Amy Farha',
+    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+    //       subtitle: 'Vice President'
+    //     },
+    //     {
+    //       name: 'Chris Jackson',
+    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+    //       subtitle: 'Vice Chairman'
+    //     },
+    //     {
+    //       name: 'Amy Farha',
+    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
+    //       subtitle: 'Vice President'
+    //     },
+    //     {
+    //       name: 'Chris Jackson',
+    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+    //       subtitle: 'Vice Chairman'
+    //     },
+    //   ]
+ //nowPlaying en dur 
+      // const users = [
+      //   {
+      //     name: 'Amy Farha',
+      //     avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
+      //     subtitle: 'Vice President'
+      //   },
+      //  ]
+
+    
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
