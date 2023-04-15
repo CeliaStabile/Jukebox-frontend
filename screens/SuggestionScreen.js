@@ -235,6 +235,10 @@ export default function SuggestionScreen() {
   );
 }
 
+// QUAND UTILISATEUR N'EST PAS DJ IL NE DOIT PAS POUVOIR SWIPE 
+// + SWIPE VERS LA GAUCHE POUR AJOUTER UNE MUSIQUE SUGGÉRÉE DANS LA PLAYLIST
+
+
 const styles = StyleSheet.create({
     background: {
       width: '100%',
