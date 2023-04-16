@@ -12,6 +12,7 @@ import {
     View,  
     TouchableOpacity,
     ScrollView,
+    RefreshControl,
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
 
@@ -25,6 +26,8 @@ export default function PlaylistScreen() {
   const [queueItems, setQueueItems] = useState([]);
   const [nowPlaying, setNowPlaying] = useState('');
   const backendUrl= "https://jukebox-backend.vercel.app"
+  const [refreshing, setRefreshing] = useState(false);
+
 
   //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer
   //dans resQueue et resNowPlaying
@@ -61,6 +64,39 @@ export default function PlaylistScreen() {
     }
   }
   
+//déclaration de fonction pour copier la queue et le nowplaying fetchés à la database
+  async function updateDatabase() {
+    if (resQueue.length > 0) {
+      try {
+        const queueResponse = await fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(resQueue),
+        });
+        console.log(await queueResponse.json());
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log('empty queue, nothing to send to database');
+    }
+
+    if (resNowPlaying !== '') {
+      try {
+        const nowPlayingResponse = await fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(resNowPlaying),
+        });
+        console.log(await nowPlayingResponse.json());
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log('empty nowplaying, nothing to send to database');
+    }
+  }
+
   // quand le dj se connecte pour la première fois, appeler GetAllSongs
   useEffect(() => {
     if (user.isDj) {
@@ -70,59 +106,56 @@ export default function PlaylistScreen() {
   
   // uniquement si getAllSongs a répondu (a fait le fetch API spotify), faire l'appel au backend pour enregistrer en BDD
   useEffect(() => {
-    if(user.isDj) {
-    async function updateDatabase() {
-      if (resQueue.length > 0) {
-        try {
-          const queueResponse = await fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(resQueue),
-          });
-          console.log(await queueResponse.json());
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.log('empty queue, nothing to send to database');
-      }
-  
-      if (resNowPlaying !== '') {
-        try {
-          const nowPlayingResponse = await fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(resNowPlaying),
-          });
-          console.log(await nowPlayingResponse.json());
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.log('empty nowplaying, nothing to send to database');
-      }
-    }
-  
-    updateDatabase();}
+    if(user.isDj) {  
+    updateDatabase();
+  }
   }, [resQueue, resNowPlaying]);
  
-  // pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas.
+  //déclaration de fonctions appel backend pour obtenir la queue et le nowPlaying
+ function getQueue(){
+  fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
+  .then(response => response.json())
+  .then(data => {
+    setQueueItems(data.queueItems);
+  });
+  };
+
+function getNowPlaying(){
+  fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`)
+  .then(response => response.json())
+  .then(data => {
+    setNowPlaying(data.nowPlaying);
+  }); 
+  }
+
+  //A l'ouverture pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas.
   // recommence à chaque fois qu'il y a un changement dans queueItems pour s'afficher quand on a bien récupéré la réponse du back
   useEffect(() => {
-  
-      fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
-        .then(response => response.json())
-        .then(data => {
-          setQueueItems(data.queueItems);
-        });
-      fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`)
-        .then(response => response.json())
-        .then(data => {
-          setNowPlaying(data.nowPlaying);
-        }); 
+   getQueue();
+   getNowPlaying();   
   }, [queueItems]);  
- 
 
+
+  // on refresh : vider database, refaire l'appel API spotify et réenregistrer.
+  // pour l'instant problème avec la queue, il faut refresh 2 fois pour qu'elle soit a jour
+  // pour tester invité, besoin d'ouvrir les deux à la fois sur deux téléphones et voir ce qu'il se passe
+  // quand le dj modifie la playlist
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      if(user.isDj){
+        await fetch(`${backendUrl}/queue/queueitems/${user.partyName}`,  { method: 'DELETE' });
+        await fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`,  { method: 'DELETE' });
+        await getAllSongs();
+        await updateDatabase();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    console.log("queue", queueItems)
+    setRefreshing(false);
+  }, []);
+  
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -160,7 +193,12 @@ export default function PlaylistScreen() {
       <View style={styles.contentdivider}>
       <View style={styles.divider2}></View>
       </View>
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} refreshControl={
+    <RefreshControl
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    />
+  }>
       {queueItems && <View style={styles.list}>{
             queueItems.map((l, i) => (
             <ListItem key={i} bottomDivider style={styles.listitem}>
