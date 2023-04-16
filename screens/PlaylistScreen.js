@@ -108,7 +108,7 @@ export default function PlaylistScreen() {
   // pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas
   // 3 secondes d'attente pour être sur d'obtenir la réponse des fetchs
   useEffect(() => {
-    setTimeout(() => {
+  
       fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
         .then(response => response.json())
         .then(data => {
@@ -118,8 +118,7 @@ export default function PlaylistScreen() {
         .then(response => response.json())
         .then(data => {
           setNowPlaying(data.nowPlaying);
-        });
-    }, 1000); 
+        }); 
   }, [queueItems]);  
  
  
