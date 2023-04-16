@@ -18,85 +18,95 @@ import {
 
 export default function PlaylistScreen() {
   const user = useSelector((state) => state.user.value);
+  const [resNowPlaying, setResNowPlaying] = useState('');
+  const [resQueue, setResQueue] = useState([]);
   const [queueItems, setQueueItems] = useState([]);
-  const [nowPlaying, setNowPlaying] = useState('')
+  const [nowPlaying, setNowPlaying] = useState('');
   const backendUrl= "https://jukebox-backend.vercel.app"
 
   //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer en BDD
+
   async function getAllSongs() {
-    await fetch(`https://api.spotify.com/v1/me/player/queue`, 
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + user.token,
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      const currPlayingFull= data.currently_playing
-      const currentlyPlaying = {
+    try {
+      const response = await fetch(`https://api.spotify.com/v1/me/player/queue`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token,
+        },
+      });
+      const data = await response.json();
+  
+      const currPlayingFull = data.currently_playing;
+      const nowPlaying = {
         title: currPlayingFull.name,
         artist: currPlayingFull.artists[0].name,
         url_image: currPlayingFull.album.images[2].url,
         uri: currPlayingFull.uri,
-      }
-      const liste = data.queue;
-      const items = liste.map(item => ({
+      };
+  
+      const queue = data.queue.map((item) => ({
         title: item.name,
         artist: item.artists[0].name,
         url_image: item.album.images[2].url,
         uri: item.uri,
       }));
-    
-      // envoyer la queue fetchée au backend pour copier dans BDD
-      if (items.length > 0) {
-        fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(items)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      } else {
-        console.log("empty queue, nothing to send to database")
-      }
-
-    // envoyer nowplaying fetchée au backend pour copier dans BDD
-      if (currentlyPlaying !== '') {
-        fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(currentlyPlaying)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      } else {
-        console.log("empty nowplaying, nothing to send to database")
-      }
-    });
+  
+      await setResNowPlaying(nowPlaying);
+      await setResQueue(queue);
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  //si c'est le DJ qui arrive sur cet écran, on fetche avec son token pour récupérer tout.
-  useEffect (() => {
-    if(user.isDj){
+  
+  // Fetch the data on mount if user is DJ
+  useEffect(() => {
+    if (user.isDj) {
       getAllSongs();
     }
   }, []);
-
-
-  //pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas
-  //3 secondes d'attente pour être sur d'obtenir la réponse des fetchs
+  
+  // Update the database when resQueue or resNowPlaying changes
+  useEffect(() => {
+    if(user.isDj) {
+    async function updateDatabase() {
+      if (resQueue.length > 0) {
+        try {
+          const queueResponse = await fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resQueue),
+          });
+          console.log(await queueResponse.json());
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.log('empty queue, nothing to send to database');
+      }
+  
+      if (resNowPlaying !== '') {
+        try {
+          const nowPlayingResponse = await fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resNowPlaying),
+          });
+          console.log(await nowPlayingResponse.json());
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.log('empty nowplaying, nothing to send to database');
+      }
+    }
+  
+    updateDatabase();}
+  }, [resQueue, resNowPlaying]);
+ 
+  // a mettre si tout merde coté invité, ca marche avec le dj
+  // pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas
+  // 3 secondes d'attente pour être sur d'obtenir la réponse des fetchs
   useEffect(() => {
     setTimeout(() => {
       fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
@@ -109,10 +119,11 @@ export default function PlaylistScreen() {
         .then(data => {
           setNowPlaying(data.nowPlaying);
         });
-    }, 3000);
-  }, []);
-
- // console.log les queueItems et now a chaque changement pour débuggage
+    }, 1000); 
+  }, [queueItems]);  
+ 
+ 
+//  console.log les queueItems et now a chaque changement pour débuggage
   // useEffect(() => {
   //   if (queueItems.length > 0) {
   //     console.log("queueItems", queueItems);
@@ -124,50 +135,6 @@ export default function PlaylistScreen() {
   //   console.log("now playing", nowPlaying);
   // }
   // }, [nowPlaying]);
-
-
-//list en dur de la queue
-    // const list = [
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //   ]
- //nowPlaying en dur 
-      // const users = [
-      //   {
-      //     name: 'Amy Farha',
-      //     avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      //     subtitle: 'Vice President'
-      //   },
-      //  ]
-
     
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
