@@ -18,14 +18,16 @@ import {
 
 export default function PlaylistScreen() {
   const user = useSelector((state) => state.user.value);
+  //resQueue et resNowPlaying : réponse de la fonction getAllSongs pour le dj
   const [resNowPlaying, setResNowPlaying] = useState('');
   const [resQueue, setResQueue] = useState([]);
+  //queueItems et nowPlaying : réponse de l'appel api au backend pour afficher la playlist
   const [queueItems, setQueueItems] = useState([]);
   const [nowPlaying, setNowPlaying] = useState('');
   const backendUrl= "https://jukebox-backend.vercel.app"
 
-  //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer en BDD
-
+  //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer
+  //dans resQueue et resNowPlaying
   async function getAllSongs() {
     try {
       const response = await fetch(`https://api.spotify.com/v1/me/player/queue`, {
@@ -59,14 +61,14 @@ export default function PlaylistScreen() {
     }
   }
   
-  // Fetch the data on mount if user is DJ
+  // quand le dj se connecte pour la première fois, appeler GetAllSongs
   useEffect(() => {
     if (user.isDj) {
       getAllSongs();
     }
   }, []);
   
-  // Update the database when resQueue or resNowPlaying changes
+  // uniquement si getAllSongs a répondu (a fait le fetch API spotify), faire l'appel au backend pour enregistrer en BDD
   useEffect(() => {
     if(user.isDj) {
     async function updateDatabase() {
@@ -104,9 +106,8 @@ export default function PlaylistScreen() {
     updateDatabase();}
   }, [resQueue, resNowPlaying]);
  
-  // a mettre si tout merde coté invité, ca marche avec le dj
-  // pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas
-  // 3 secondes d'attente pour être sur d'obtenir la réponse des fetchs
+  // pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas.
+  // recommence à chaque fois qu'il y a un changement dans queueItems pour s'afficher quand on a bien récupéré la réponse du back
   useEffect(() => {
   
       fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
@@ -121,20 +122,7 @@ export default function PlaylistScreen() {
         }); 
   }, [queueItems]);  
  
- 
-//  console.log les queueItems et now a chaque changement pour débuggage
-  // useEffect(() => {
-  //   if (queueItems.length > 0) {
-  //     console.log("queueItems", queueItems);
-  //   }
-  // }, [queueItems]);
 
-  // useEffect(() => {
-  //   if(nowPlaying !== ''){
-  //   console.log("now playing", nowPlaying);
-  // }
-  // }, [nowPlaying]);
-    
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
