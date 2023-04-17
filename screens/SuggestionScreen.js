@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -124,6 +123,13 @@ async function recherche(value) {
                 }
               });
           }     
+
+
+          const handleDelete = (index) => {
+            const newList = list.filter((_, i) => i !== index);
+            setList(newList);
+          };
+    
             
 
 
