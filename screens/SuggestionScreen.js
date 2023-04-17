@@ -115,6 +115,12 @@ export default function SuggestionScreen() {
        const [results, setResults] = useState([]);
        const [search, setSearch] = useState("");
 
+
+    //   
+       const [playlist, setPlaylist] = useState([]);
+
+
+
        const updateSearch = (search) => {
         setSearch(search);
       };
@@ -123,6 +129,14 @@ export default function SuggestionScreen() {
         const newList = list.filter((_, i) => i !== index);
         setList(newList);
       };
+      
+
+    //
+      const handleAddToPlaylist = (index) => {
+        const itemToAdd = list[index];
+        setPlaylist([...playlist, itemToAdd]);
+          };
+          
       
       //  const [searchTimer, setSearchTimer] = useState(null);
    
@@ -159,6 +173,9 @@ export default function SuggestionScreen() {
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
               onChangeText={updateSearch}
+
+
+
               
               // {(text) => {
               //       if (searchTimer) {
@@ -171,6 +188,9 @@ export default function SuggestionScreen() {
               //           }, 2000),
               //       );
               //   }}
+
+
+
                value={search}
             />
             <FlatList
@@ -197,46 +217,58 @@ export default function SuggestionScreen() {
       </View>
 
       <ScrollView style={styles.scroll}>
-        <View style={styles.list}>{
-            list.map((l, i) => ( 
-            <Swipeable
-              renderRightActions={(index) => (
-                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)} >
-                <View style={styles.rightSwipeItem} >
-                </View>
-                </TouchableOpacity>
-              )}
-              onSwipeableRightOpen={() => { handleDelete(i);
-              }} >
-            <ListItem key={i} bottomDivider style={styles.listitem}>
-                <Avatar source={{uri: l.avatar_url}} />
-                <ListItem.Content style={styles.listcontent}>
-                <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
-                <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
-                </ListItem.Content>
+      <View style={styles.list}>{
+  list.map((l, i) => {
+    return (
+      user.isDj ?
+        <Swipeable
+          key={i}
+         //
+          renderRightActions={(index) => (
+            <TouchableOpacity onPress={() => onSwipeableRightOpen(index)} >
+              <View style={styles.rightSwipeItem} >
+              </View>
+            </TouchableOpacity>
+          )}
+          onSwipeableRightOpen={() => { handleDelete(i) }}
+         //   
+          renderLeftActions={(index) => (
+            <TouchableOpacity onPress={() => onSwipeableLeftOpen(index)} >
+              <View style={styles.leftSwipeItem} >
+              </View>
+            </TouchableOpacity>
+          )}
+          onSwipeableLeftOpen={() => { handleAddToPlaylist(i) }}
+        >
 
-                {!user.isDj &&<LikeButton />}
-
-                
-
-
-            </ListItem>
-            </Swipeable>
-            ))
-          }
+          <ListItem key={i} bottomDivider style={styles.listitem}>
+            <Avatar source={{ uri: l.avatar_url }} />
+            <ListItem.Content style={styles.listcontent}>
+              <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
+              <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
+            </ListItem.Content>
+            {!user.isDj && <LikeButton />}
+          </ListItem>
+        </Swipeable> :
+        <ListItem key={i} bottomDivider style={styles.listitem}>
+          <Avatar source={{ uri: l.avatar_url }} />
+          <ListItem.Content style={styles.listcontent}>
+            <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
+            <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
+          </ListItem.Content>
+          {!user.isDj && <LikeButton />}
+        </ListItem>
+    );
+  })
+}
         </View>
       </ScrollView>
-
-
-
       </KeyboardAvoidingView>
       </ImageBackground>
     
   );
 }
 
-// QUAND UTILISATEUR N'EST PAS DJ IL NE DOIT PAS POUVOIR SWIPE 
-// + SWIPE VERS LA GAUCHE POUR AJOUTER UNE MUSIQUE SUGGÉRÉE DANS LA PLAYLIST
 
 
 const styles = StyleSheet.create({
@@ -319,7 +351,10 @@ const styles = StyleSheet.create({
       color: '#FAEE1C',
     },
     rightSwipeItem: {
-      width: 1,
-    }
+      width: 5,
+    },
+    leftSwipeItem: {
+      width: 5,
+    }, 
   },
 );
