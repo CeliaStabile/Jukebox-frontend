@@ -106,7 +106,6 @@ async function recherche(value) {
               })}
       
 
-      
           function ajoutLike(i) {
             
             fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
@@ -124,33 +123,39 @@ async function recherche(value) {
               });
           }     
 
-           const handleDelete = (index) => {
+
+
+
+
+          const handleDelete = (index) => {
             const newSuggestions = [...suggestion];
             newSuggestions.splice(index, 1);
             setSuggestion(newSuggestions);
           };
-          
 
+          // a changer ne fonctionne pas
+          function handleDeleted(i) {
 
-          const handleDeleted = async (id) => {
-            await fetch(`/api/music/${id}`, { method: 'DELETE' });
+            fetch(`${backendUrl}/suggestions/${user.partyName}/${i.uri}`, {
+              meyhod: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                partyName: user.partyName,
+                uri: i.uri
+              })
+            })
+            .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log('A supprimé');
+                }
+                
+              });
+          }     
           
-            // Vérifie que la suppression est enregistrée dans la base de données
-            const response = await fetch(`/api/music/${id}`);
-            const music = await response.json();
-            if (music) {
-              console.log(`La musique avec l'id ${id} n'a pas été supprimée`);
-              return;
-            }
-          };
-          
-
           
         //  const handleAddToPlaylist = 
           
-            
-
-
           
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -210,7 +215,7 @@ async function recherche(value) {
             <View style={styles.rightSwipeItem} />
           </TouchableOpacity>
         )}
-        onSwipeableRightOpen={() => {   handleDelete(i) && handleDeleted    }}
+        onSwipeableRightOpen={() => {   handleDelete(i) && handleDeleted(i)  }}
 
 
         renderLeftActions={(index) => (
