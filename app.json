@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Jukebox",
-    "slug": "Jukebox",
+    "slug": "jukebox",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "529290d2-0b8a-4500-b4bb-3164c084927e"
+      }
+    },
+    "owner": "celias38"
   }
 }
