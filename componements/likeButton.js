@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const LikeButton = () => {
+const LikeButton = (props) => {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
 
-  const handleLike = () => {
+  const handleLike = (l) => {
     if (!liked) {
       setLiked(true);
       setCount(count + 1);
+      props.onPress(l);
     }
   };
 
   return (
-    <TouchableOpacity onPress={handleLike}>
+    <TouchableOpacity onPress={() => handleLike(props.song)}>
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5, }}>
         <Text style={{ marginRight: 8, }}>{count}</Text>
         {liked ? (
