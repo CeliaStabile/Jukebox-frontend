@@ -123,9 +123,7 @@ async function recherche(value) {
                 }
               });
           }     
-            
-
-
+          
           
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
