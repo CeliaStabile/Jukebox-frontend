@@ -21,9 +21,9 @@ import {
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
   import LikeButton from '../componements/likeButton';
+import { addSuggestion } from '../reducers/user';
  
 export default function SuggestionScreen() {
-
 
   const backendUrl= "https://jukebox-backend.vercel.app"
 
@@ -33,12 +33,11 @@ export default function SuggestionScreen() {
        const [resultats, setResultats] = useState([]);
        const [search, setSearch] = useState("");
        const [suggestion, setSuggestion]= useState([]);
+       const [isLiked, setIsLiked] = useState(false);
 
-       useEffect(() => {
-        getSuggestions();
-      }, [suggestion]);
+       const dispatch = useDispatch();
 
-
+//déclaration de fonction pour obtenir les suggestions du backend
      async function getSuggestions() {
       try {
         const response = await fetch(`${backendUrl}/suggestions/${user.partyName}`);
@@ -50,7 +49,13 @@ export default function SuggestionScreen() {
         console.error(error);
       }
     }
-      
+    
+    //à l'ouverture du composant, récupérer les suggestions du backend
+    //se met à jour à chaque fois que suggestion change
+    useEffect(() => {
+      getSuggestions();
+    }, [suggestion]);
+
 function ajoutsuggestion(item) {
 //pour envoyer dans le back la chanson dans la base de donnée
 
@@ -69,7 +74,6 @@ fetch(`${backendUrl}/suggestions/new`, {
       .then(data => {
         if (data.result) {
           console.log('envoyé au backend')
-       
         }
       });
     setResultats([]);
@@ -104,17 +108,13 @@ async function recherche(value) {
               })}
       
 
-       
-        
       
           function ajoutLike(i) {
             
-            fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
+            // fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
+              fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                likeCount: 1
-              })
+              headers: { 'Content-Type': 'application/json' },   
             })
               .then(response => response.json())
               .then(data => {
@@ -163,7 +163,7 @@ async function recherche(value) {
             />
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
-              <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
+              {/* <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text> */}
             </View>
       </View>
       
@@ -193,7 +193,7 @@ async function recherche(value) {
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
 
-                {!user.isDj &&<LikeButton onPress={()=> ajoutLike(l)} song={l} />}
+             <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
             </ListItem>
             </Swipeable>
             )

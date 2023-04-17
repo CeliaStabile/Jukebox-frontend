@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {  
   KeyboardAvoidingView, 
@@ -10,15 +10,13 @@ import {
   TouchableOpacity, 
   Platform} from 'react-native';
   import { useDispatch, useSelector } from 'react-redux';
-  import { getPartyName } from '../reducers/user';
   
 
   export default function ConnectionScreen({navigation}) {
    
     const backendUrl = 'https://jukebox-backend.vercel.app'
     const user = useSelector((state) => state.user.value);
-    const dispatch = useDispatch();
-
+     
     const handleSubmit = () => {
       if(user.isDj && user.partyName){
       fetch(`${backendUrl}/newparty`, {
@@ -31,25 +29,7 @@ import {
       navigation.navigate('TabNavigator');
     }
   };
-
-  function partyrandom () {
-    const mots =['badbunny','confetti','teuf','hiphop','dance','biere','jeanne','rnb','disney','macumba','fiesta','shaki','zouk','reaggeton','jazz','rap','ska', 'djsnake', 'retro', 'frenchtouch', 'karaoke', 'dancehall', 'rock', 'soul', 'blues', 'bossaova']
-    const motAleatoire = mots[Math.floor(Math.random() * mots.length)];
-    const chiffreAleatoire = Math.floor(Math.random() * 10000);
-    const password = motAleatoire + chiffreAleatoire;
-         console.log('password', password);
-    return password;
-  }
-
-  
-  useEffect(() => {
-    if (user.isDj) {
-      dispatch(getPartyName(partyrandom()));
-    }
-  }, []);
-
-
-  
+    
  
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>

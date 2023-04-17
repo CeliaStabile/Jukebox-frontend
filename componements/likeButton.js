@@ -9,7 +9,7 @@ const LikeButton = (props) => {
   const handleLike = (l) => {
     if (!liked) {
       setLiked(true);
-      setCount(count + 1);
+      setCount(props.likeCount);
       props.onPress(l);
     }
   };
@@ -17,7 +17,7 @@ const LikeButton = (props) => {
   return (
     <TouchableOpacity onPress={() => handleLike(props.song)}>
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5, }}>
-        <Text style={{ marginRight: 8, }}>{count}</Text>
+        <Text style={{ marginRight: 8, }}>{props.likeCount}</Text>
         {liked ? (
           <Icon name="heart" size={24} color="#F3558E" />
         ) : (

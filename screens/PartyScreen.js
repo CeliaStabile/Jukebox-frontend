@@ -21,22 +21,7 @@ import {
 
     const backendUrl = 'https://jukebox-backend.vercel.app'
 
-    const CLIENT_ID = "c6d8fa104582425a99c8ee0bc153f202";
-    const CLIENT_SECRET = "5c876fea03f1440995028805f694cf14";
-
     const handleSubmit = () => {
-      fetch("https://accounts.spotify.com/api/token", { 
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
-      })
-        .then(result => result.json())
-        .then(data => { 
-          const token = data.access_token;
-          dispatch(getToken(token));
-          console.log ('getToken', token);
-          console.log('user.token', user.token);
-      })
       fetch(`${backendUrl}/findparty?name=${partyName}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
