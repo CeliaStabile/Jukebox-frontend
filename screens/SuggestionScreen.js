@@ -1,3 +1,5 @@
+
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -104,8 +106,6 @@ async function recherche(value) {
               })}
       
 
-       
-        
       
           function ajoutLike(i) {
             
@@ -124,12 +124,30 @@ async function recherche(value) {
               });
           }     
 
-
-          const handleDelete = (index) => {
-            const newList = list.filter((_, i) => i !== index);
-            setList(newList);
+           const handleDelete = (index) => {
+            const newSuggestions = [...suggestion];
+            newSuggestions.splice(index, 1);
+            setSuggestion(newSuggestions);
           };
-    
+          
+
+
+          const handleDeleted = async (id) => {
+            await fetch(`/api/music/${id}`, { method: 'DELETE' });
+          
+            // Vérifie que la suppression est enregistrée dans la base de données
+            const response = await fetch(`/api/music/${id}`);
+            const music = await response.json();
+            if (music) {
+              console.log(`La musique avec l'id ${id} n'a pas été supprimée`);
+              return;
+            }
+          };
+          
+
+          
+        //  const handleAddToPlaylist = 
+          
             
 
 
@@ -182,31 +200,57 @@ async function recherche(value) {
       </View>
 
       <ScrollView style={styles.scroll}>
-        <View style={styles.list}>{
-          suggestion.map((l, i) => (
-                        <Swipeable
-              renderRightActions={(index) => (
-                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
-                <View style={styles.rightSwipeItem} >
-                </View>
-                </TouchableOpacity>
-              )}
-              onSwipeableRightOpen={() => { handleDelete(i);
-              }} >
-            <ListItem key={i} bottomDivider style={styles.listitem}>
-                <Avatar source={{uri: l.url_image}} />
-                <ListItem.Content style={styles.listcontent}>
-                <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
-                <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
-                </ListItem.Content>
+      <View style={styles.list}>{
+  suggestion.map((l, i) => (
+    user.isDj ?
+      <Swipeable
 
-                {!user.isDj &&<LikeButton onPress={()=> ajoutLike(l)} song={l} />}
-            </ListItem>
-            </Swipeable>
-            )
-            )
-          }
-        </View>
+        renderRightActions={(index) => (
+          <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+            <View style={styles.rightSwipeItem} />
+          </TouchableOpacity>
+        )}
+        onSwipeableRightOpen={() => {   handleDelete(i) && handleDeleted    }}
+
+
+        renderLeftActions={(index) => (
+          <TouchableOpacity onPress={() => onSwipeableLeftOpen(index)}>
+            <View style={styles.leftSwipeItem} />
+          </TouchableOpacity>
+        )}
+        onSwipeableLeftOpen={() => {  /* handleAddToPlaylist */     }}
+        >
+        
+        <ListItem key={i} bottomDivider style={styles.listitem}>
+          <Avatar source={{uri: l.url_image}} />
+          <ListItem.Content style={styles.listcontent}>
+            <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+            <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+          </ListItem.Content>
+          {user.isDj && (
+            <View style={styles.likebutton}>
+              <LikeButton onPress={()=> ajoutLike(l)} song={l} />
+            </View>
+          )}
+        </ListItem>
+      </Swipeable>
+    :
+      <ListItem key={i} bottomDivider style={styles.listitem}>
+        <Avatar source={{uri: l.url_image}} />
+        <ListItem.Content style={styles.listcontent}>
+          <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+          <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+        </ListItem.Content>
+        {user.isDj && (
+          <View style={styles.likebutton}>
+            <LikeButton onPress={()=> ajoutLike(l)} song={l} />
+          </View>
+        )}
+      </ListItem>
+    )
+  )
+}</View>
+
       </ScrollView>
       </KeyboardAvoidingView>
       </ImageBackground>
@@ -299,6 +343,13 @@ const styles = StyleSheet.create({
     song:{
       backgroundColor: "white",
     },
+    rightSwipeItem: {
+      width: 1,
+
+    },
+    leftSwipeItem: {
+      width: 1,
+    }
     
   },
 );
