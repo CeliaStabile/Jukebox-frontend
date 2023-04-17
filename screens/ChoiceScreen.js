@@ -34,6 +34,7 @@ import {
   const dispatch = useDispatch();
   const isDJ = () => {
     dispatch(djLog());
+    console.log('choice : dj');
   };
   
   const handlePassword = () => {
