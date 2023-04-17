@@ -62,7 +62,7 @@ export default function PlaylistScreen() {
     } catch (error) {
       console.error(error);
     }
-  }
+  } 
   
 //déclaration de fonction pour copier la queue et le nowplaying fetchés à la database
   async function updateDatabase() {
