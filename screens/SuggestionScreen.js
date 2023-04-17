@@ -29,68 +29,52 @@ export default function SuggestionScreen() {
   const backendUrl= "https://jukebox-backend.vercel.app"
 
   const user = useSelector((state) => state.user.value);
-   console.log('user.token',user.token); 
-   
-    const users = [
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice President'
-        },
-       ]
-
-       const list = [
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice President'
-        },
-       ]
-
-
+  
        const [input, setInput] = useState("");
        const [resultats, setResultats] = useState([]);
        const [search, setSearch] = useState("");
-       const [suggestion, setSuggestions]= useState([]);
+       const [suggestion, setSuggestion]= useState([]);
 
-     async  function getSuggestion() {
-       await fetch(`${backendUrl}/suggestions/${user.partyName}`)
-          .then(response => response.json())
-          .then(data => {
-            setSuggestions(data.suggestion);
-          
+       useEffect(() => {
+        getSuggestions();
+      }, [suggestion]);
 
-          });
-         ;
+
+     async function getSuggestions() {
+      try {
+        const response = await fetch(`${backendUrl}/suggestions/${user.partyName}`);
+        const data = await response.json();
+        if(data.suggestion !== suggestion) {
+          setSuggestion(data.suggestions);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    
-     useEffect (() => {
-      getSuggestion();
-     },[]);
-
+    }
       
 function ajoutsuggestion(item) {
 //pour envoyer dans le back la chanson dans la base de donnée
+
 fetch(`${backendUrl}/suggestions/new`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
       name: user.partyName,
-      title: resultats.title,
-      artist: resultats.artist ,
-      url_image: resultats.url_image,
-      uri: resultats.uri ,
+      title: item.title,
+      artist: item.artist ,
+      url_image: item.url_image,
+      uri: item.uri ,
       likeCount:0
     })
       }).then(response => response.json())
       .then(data => {
         if (data.result) {
           console.log('envoyé au backend')
-        setResultats([]);
+       
         }
       });
-
-}
+    setResultats([]);
+ }
 
 
 async function recherche(value) {  
@@ -107,7 +91,7 @@ async function recherche(value) {
         const track = await fetch(`https://api.spotify.com/v1/search?query=${input}&type=track,artist&market=FR&offset=0&limit=5`, trackParameters)
         .then(response => response.json())
         .then(data => {
-          console.log('data', data);
+          //console.log('data', data);
               const result = data.tracks.items;
               const tracks = result.map(item => ({
                 title: item.name,
@@ -118,35 +102,29 @@ async function recherche(value) {
               //useState tableau vide resultats à prendre en compte
               setResultats(tracks);
               setInput('');
-             
-              })
-           
-
-     }
-      console.log('resultat', resultats);
+              })}
+      
 
        
         
-        /*const affichage = resultats.map((data, i) => {
-          return (
-           <View onPress={() => ajoutsuggestion()}>
-              <Image source={{uri:data.url_image}}/>
-               <Text>{data.title}</Text>
-                <Text>{data.artist}</Text>
-            </View>
-            
-          )})*/
-
-        /*  const renderItem = ({ item }) => (
-            <TouchableOpacity onPress={() => ajoutsuggestion()}>
-              <View>
-                <Image source={{uri:item.url_image}}/>
-                <Text>Titre : {item.title}, Artiste : {item.artist}</Text>
-               </View>
-            </TouchableOpacity>
-          );*/
       
-
+          function ajoutLike(i) {
+            
+            fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                likeCount: 1
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log('A voté')
+                }
+              });
+          }     
+            
 
 
           
@@ -175,8 +153,11 @@ async function recherche(value) {
             <FlatList
                 data={resultats}
                 renderItem={({ item }) => (
-                  <View onPress={() => ajoutsuggestion(item)}>
-                   <Text>Titre : {item.title}, Artiste : {item.artist}</Text>
+                  <View style={styles.song}>
+                    
+                    <TouchableOpacity onPress={() => ajoutsuggestion(item)}>
+                   <Text >Titre : {item.title}, Artiste : {item.artist}</Text>
+                   </TouchableOpacity>
                  </View>
                 )}
                 keyExtractor={(item) => item.uri}
@@ -196,7 +177,7 @@ async function recherche(value) {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
-            suggestion.map((l, i) => (
+          suggestion.map((l, i) => (
                         <Swipeable
               renderRightActions={(index) => (
                 <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
@@ -213,20 +194,14 @@ async function recherche(value) {
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
 
-                {!user.isDj &&<LikeButton />}
-
-                
-
-
+                {!user.isDj &&<LikeButton onPress={()=> ajoutLike(l)} song={l} />}
             </ListItem>
             </Swipeable>
-            ))
+            )
+            )
           }
         </View>
       </ScrollView>
-
-
-
       </KeyboardAvoidingView>
       </ImageBackground>
     
@@ -314,6 +289,10 @@ const styles = StyleSheet.create({
     },
     rightSwipeItem: {
       width: 1,
-    }
+    },
+    song:{
+      backgroundColor: "white",
+    },
+    
   },
 );
