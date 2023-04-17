@@ -124,20 +124,17 @@ async function recherche(value) {
           }     
 
 
-
-
-
           const handleDelete = (index) => {
             const newSuggestions = [...suggestion];
             newSuggestions.splice(index, 1);
             setSuggestion(newSuggestions);
           };
 
-          // a changer ne fonctionne pas
+          //  ne fonctionne pas ???? 
           function handleDeleted(i) {
 
             fetch(`${backendUrl}/suggestions/${user.partyName}/${i.uri}`, {
-              meyhod: 'DELETE',
+              method: 'DELETE',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 partyName: user.partyName,
@@ -154,7 +151,7 @@ async function recherche(value) {
           }     
           
           
-        //  const handleAddToPlaylist = 
+        /* function handleAddToPlaylist(i) */
           
           
   return (
@@ -215,7 +212,7 @@ async function recherche(value) {
             <View style={styles.rightSwipeItem} />
           </TouchableOpacity>
         )}
-        onSwipeableRightOpen={() => {   handleDelete(i) && handleDeleted(i)  }}
+        onSwipeableRightOpen={() => {     handleDelete(i) && handleDeleted(i)           }}
 
 
         renderLeftActions={(index) => (
@@ -223,7 +220,7 @@ async function recherche(value) {
             <View style={styles.leftSwipeItem} />
           </TouchableOpacity>
         )}
-        onSwipeableLeftOpen={() => {  /* handleAddToPlaylist */     }}
+        onSwipeableLeftOpen={() => {            /* handleAddToPlaylist */               }}
         >
         
         <ListItem key={i} bottomDivider style={styles.listitem}>
@@ -252,9 +249,12 @@ async function recherche(value) {
           </View>
         )}
       </ListItem>
+      
+      
     )
   )
-}</View>
+}
+</View>
 
       </ScrollView>
       </KeyboardAvoidingView>
