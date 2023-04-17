@@ -11,13 +11,10 @@ import {
   TouchableOpacity, 
   Platform} from 'react-native';
   import { useDispatch, useSelector } from 'react-redux';
-  import { djLog, getToken, getPartyName } from '../reducers/user';
+  import { djLog, getToken, getPartyName, guestLog } from '../reducers/user';
 
   export default function ChoiceScreen({navigation}) {
-   
-    const CLIENT_ID = "c6d8fa104582425a99c8ee0bc153f202";
-    const CLIENT_SECRET = "5c876fea03f1440995028805f694cf14";
-    
+     
   const user = useSelector((state) => state.user.value);
 
   function partyrandom () {
@@ -37,27 +34,15 @@ import {
     console.log('choice : dj');
   };
   
-  const handlePassword = () => {
-    dispatch(getPartyName(partyrandom()));   
-  }
+  // const handlePassword = () => {
+  //   dispatch(getPartyName(partyrandom()));   
+  // }
   
   const handleInvite = () => {
-    fetch("https://accounts.spotify.com/api/token", { 
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
-  })
-    .then(result => result.json())
-    .then(data => { 
-      const token = data.access_token;
-      dispatch(getToken(token));
-      console.log ('getToken', token);
-      console.log('user.token', user.token);
-      navigation.navigate('Party')
-                        })
-      
-      
+    dispatch(guestLog());
+    navigation.navigate('Party');    
   };
+
   console.log('user.token', user.token, 'partyname', user.partyName);
 
   return (
@@ -73,7 +58,8 @@ import {
         <Text style={styles.title}>Choisis ton rôle</Text>
         <View style={styles.divider}></View>
         <View style={styles.containerButton}>        
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ(), handlePassword() }} activeOpacity={0.8}>
+        {/* ici dans touchable opacity appeler handlepassword */}
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Connection'), isDJ() }} activeOpacity={0.8}>
                  <FontAwesome name='headphones' size={63} color='#581B98'/>
                   <Text style={styles.textButton}>DJ</Text>       
                 </TouchableOpacity>

@@ -21,7 +21,6 @@ import {
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
   import LikeButton from '../componements/likeButton';
-
  
 export default function SuggestionScreen() {
 

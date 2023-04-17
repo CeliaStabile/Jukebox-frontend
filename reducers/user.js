@@ -11,6 +11,9 @@ export const userSlice = createSlice({
     djLog: (state, action) => {
       state.value.isDj = true;
     },
+    guestLog: (state, action) => {
+      state.value.isDj = false;
+    },
     getPartyName: (state, action) => {
         state.value.partyName = action.payload},
     getToken: (state, action) => {
@@ -24,5 +27,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { djLog, logout , getPartyName, getToken} = userSlice.actions;
+export const { djLog, logout , getPartyName, getToken, guestLog} = userSlice.actions;
 export default userSlice.reducer;
