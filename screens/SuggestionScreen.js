@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -22,138 +22,112 @@ import {
   import { useSelector, useDispatch } from 'react-redux';
   import LikeButton from '../componements/likeButton';
 
-
-
-export default function SuggestionScreen() {
-  const user = useSelector((state) => state.user.value);
-  const [list, setList] = useState([
-
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      subtitle: 'Vice Chairman'
-    }
-    
-  ]);
  
+export default function SuggestionScreen() {
 
-    const users = [
-        {
-          name: 'Amy Farha',
-          avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-          subtitle: 'Vice President'
-        },
-       ]
 
-      
+  const backendUrl= "https://jukebox-backend.vercel.app"
+
+  const user = useSelector((state) => state.user.value);
+  
        const [input, setInput] = useState("");
-       const [results, setResults] = useState([]);
+       const [resultats, setResultats] = useState([]);
        const [search, setSearch] = useState("");
+       const [suggestion, setSuggestion]= useState([]);
+
+       useEffect(() => {
+        getSuggestions();
+      }, [suggestion]);
 
 
-    //   
-       const [playlist, setPlaylist] = useState([]);
+     async function getSuggestions() {
+      try {
+        const response = await fetch(`${backendUrl}/suggestions/${user.partyName}`);
+        const data = await response.json();
+        if(data.suggestion !== suggestion) {
+          setSuggestion(data.suggestions);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+      
+function ajoutsuggestion(item) {
+//pour envoyer dans le back la chanson dans la base de donnée
+
+fetch(`${backendUrl}/suggestions/new`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+      name: user.partyName,
+      title: item.title,
+      artist: item.artist ,
+      url_image: item.url_image,
+      uri: item.uri ,
+      likeCount:0
+    })
+      }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          console.log('envoyé au backend')
+       
+        }
+      });
+    setResultats([]);
+ }
 
 
+async function recherche(value) {  
 
-       const updateSearch = (search) => {
-        setSearch(search);
-      };
-
-      const handleDelete = (index) => {
-        const newList = list.filter((_, i) => i !== index);
-        setList(newList);
-      };
+    const trackParameters = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`,
+          }
+    }
+      // pour avoir titanic en premier il faut faire un tri selon popularité de la chanson pour l'avoir en premier
+       
+        const track = await fetch(`https://api.spotify.com/v1/search?query=${input}&type=track,artist&market=FR&offset=0&limit=5`, trackParameters)
+        .then(response => response.json())
+        .then(data => {
+          //console.log('data', data);
+              const result = data.tracks.items;
+              const tracks = result.map(item => ({
+                title: item.name,
+                artist: item.artists[0].name,
+                url_image: item.album.images[2].url,
+                uri: item.uri,
+              }));
+              //useState tableau vide resultats à prendre en compte
+              setResultats(tracks);
+              setInput('');
+              })}
       
 
-    //
-      const handleAddToPlaylist = (index) => {
-        const itemToAdd = list[index];
-        setPlaylist([...playlist, itemToAdd]);
-          };
+       
+        
+      
+          function ajoutLike(i) {
+            
+            fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                likeCount: 1
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log('A voté')
+                }
+              });
+          }     
+            
+
+
           
-      
-      //  const [searchTimer, setSearchTimer] = useState(null);
-   
-      //  async function fetchData(text) {
-      //      const res = await fetch(
-      //          `https://demo.wp-api.org/wp-json/wp/v2/posts?_embed&search=${text}`,
-      //      );
-      //      res
-      //          .json()
-      //          .then((res) => {
-      //              setResults(res);
-      //          })
-      //          .catch((err) => console.log(err));
-      //  }
-    
-      
-
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -172,36 +146,21 @@ export default function SuggestionScreen() {
               platform="default"            
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
-              onChangeText={updateSearch}
-
-
-
-              
-              // {(text) => {
-              //       if (searchTimer) {
-              //           clearTimeout(searchTimer);
-              //       }
-              //       setInput(text);
-              //       setSearchTimer(
-              //           setTimeout(() => {
-              //               fetchData(text);
-              //           }, 2000),
-              //       );
-              //   }}
-
-
-
-               value={search}
-            />
+              onChangeText={(value) => setInput(value)}
+              onSubmitEditing={() => recherche(input)}
+              value={input}
+              />
             <FlatList
-                data={results}
+                data={resultats}
                 renderItem={({ item }) => (
-                    <View>
-                        <Text>{item.title.rendered}</Text>
-                        <Text>{item.excerpt.rendered}</Text>
-                    </View>
+                  <View style={styles.song}>
+                    
+                    <TouchableOpacity onPress={() => ajoutsuggestion(item)}>
+                   <Text >Titre : {item.title}, Artiste : {item.artist}</Text>
+                   </TouchableOpacity>
+                 </View>
                 )}
-                keyExtractor={(item) => "" + item.id}
+                keyExtractor={(item) => item.uri}
             />
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
@@ -217,50 +176,30 @@ export default function SuggestionScreen() {
       </View>
 
       <ScrollView style={styles.scroll}>
-      <View style={styles.list}>{
-  list.map((l, i) => {
-    return (
-      user.isDj ?
-        <Swipeable
-          key={i}
-         //
-          renderRightActions={(index) => (
-            <TouchableOpacity onPress={() => onSwipeableRightOpen(index)} >
-              <View style={styles.rightSwipeItem} >
-              </View>
-            </TouchableOpacity>
-          )}
-          onSwipeableRightOpen={() => { handleDelete(i) }}
-         //   
-          renderLeftActions={(index) => (
-            <TouchableOpacity onPress={() => onSwipeableLeftOpen(index)} >
-              <View style={styles.leftSwipeItem} >
-              </View>
-            </TouchableOpacity>
-          )}
-          onSwipeableLeftOpen={() => { handleAddToPlaylist(i) }}
-        >
+        <View style={styles.list}>{
+          suggestion.map((l, i) => (
+                        <Swipeable
+              renderRightActions={(index) => (
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+                <View style={styles.rightSwipeItem} >
+                </View>
+                </TouchableOpacity>
+              )}
+              onSwipeableRightOpen={() => { handleDelete(i);
+              }} >
+            <ListItem key={i} bottomDivider style={styles.listitem}>
+                <Avatar source={{uri: l.url_image}} />
+                <ListItem.Content style={styles.listcontent}>
+                <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+                <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+                </ListItem.Content>
 
-          <ListItem key={i} bottomDivider style={styles.listitem}>
-            <Avatar source={{ uri: l.avatar_url }} />
-            <ListItem.Content style={styles.listcontent}>
-              <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
-              <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
-            </ListItem.Content>
-            {!user.isDj && <LikeButton />}
-          </ListItem>
-        </Swipeable> :
-        <ListItem key={i} bottomDivider style={styles.listitem}>
-          <Avatar source={{ uri: l.avatar_url }} />
-          <ListItem.Content style={styles.listcontent}>
-            <ListItem.Title style={styles.listtitle}>{l.name}</ListItem.Title>
-            <ListItem.Subtitle style={styles.listsubtitle}>{l.subtitle}</ListItem.Subtitle>
-          </ListItem.Content>
-          {!user.isDj && <LikeButton />}
-        </ListItem>
-    );
-  })
-}
+                {!user.isDj &&<LikeButton onPress={()=> ajoutLike(l)} song={l} />}
+            </ListItem>
+            </Swipeable>
+            )
+            )
+          }
         </View>
       </ScrollView>
       </KeyboardAvoidingView>
@@ -268,8 +207,6 @@ export default function SuggestionScreen() {
     
   );
 }
-
-
 
 const styles = StyleSheet.create({
     background: {
@@ -351,10 +288,11 @@ const styles = StyleSheet.create({
       color: '#FAEE1C',
     },
     rightSwipeItem: {
-      width: 5,
+      width: 1,
     },
-    leftSwipeItem: {
-      width: 5,
-    }, 
+    song:{
+      backgroundColor: "white",
+    },
+    
   },
 );

@@ -12,163 +12,150 @@ import {
     View,  
     TouchableOpacity,
     ScrollView,
+    RefreshControl,
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function PlaylistScreen() {
   const user = useSelector((state) => state.user.value);
+  //resQueue et resNowPlaying : réponse de la fonction getAllSongs pour le dj
+  const [resNowPlaying, setResNowPlaying] = useState('');
+  const [resQueue, setResQueue] = useState([]);
+  //queueItems et nowPlaying : réponse de l'appel api au backend pour afficher la playlist
   const [queueItems, setQueueItems] = useState([]);
-  const [nowPlaying, setNowPlaying] = useState('')
+  const [nowPlaying, setNowPlaying] = useState('');
   const backendUrl= "https://jukebox-backend.vercel.app"
+  const [refreshing, setRefreshing] = useState(false);
 
-  //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer en BDD
+
+  //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer
+  //dans resQueue et resNowPlaying
   async function getAllSongs() {
-    await fetch(`https://api.spotify.com/v1/me/player/queue`, 
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + user.token,
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      const currPlayingFull= data.currently_playing
-      const currentlyPlaying = {
+    try {
+      const response = await fetch(`https://api.spotify.com/v1/me/player/queue`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.token,
+        },
+      });
+      const data = await response.json();
+  
+      const currPlayingFull = data.currently_playing;
+      const nowPlaying = {
         title: currPlayingFull.name,
         artist: currPlayingFull.artists[0].name,
         url_image: currPlayingFull.album.images[2].url,
         uri: currPlayingFull.uri,
-      }
-      const liste = data.queue;
-      const items = liste.map(item => ({
+      };
+  
+      const queue = data.queue.map((item) => ({
         title: item.name,
         artist: item.artists[0].name,
         url_image: item.album.images[2].url,
         uri: item.uri,
       }));
-    
-      // envoyer la queue fetchée au backend pour copier dans BDD
-      if (items.length > 0) {
-        fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
+  
+      await setResNowPlaying(nowPlaying);
+      await setResQueue(queue);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+//déclaration de fonction pour copier la queue et le nowplaying fetchés à la database
+  async function updateDatabase() {
+    if (resQueue.length > 0) {
+      try {
+        const queueResponse = await fetch(`${backendUrl}/queue/copyqueueitems/${user.partyName}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(items)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
+          body: JSON.stringify(resQueue),
         });
-      } else {
-        console.log("empty queue, nothing to send to database")
+        console.log(await queueResponse.json());
+      } catch (error) {
+        console.error(error);
       }
+    } else {
+      console.log('empty queue, nothing to send to database');
+    }
 
-    // envoyer nowplaying fetchée au backend pour copier dans BDD
-      if (currentlyPlaying !== '') {
-        fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
+    if (resNowPlaying !== '') {
+      try {
+        const nowPlayingResponse = await fetch(`${backendUrl}/queue/copynowplaying/${user.partyName}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(currentlyPlaying)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
+          body: JSON.stringify(resNowPlaying),
         });
-      } else {
-        console.log("empty nowplaying, nothing to send to database")
+        console.log(await nowPlayingResponse.json());
+      } catch (error) {
+        console.error(error);
       }
-    });
+    } else {
+      console.log('empty nowplaying, nothing to send to database');
+    }
   }
 
-  //si c'est le DJ qui arrive sur cet écran, on fetche avec son token pour récupérer tout.
-  useEffect (() => {
-    if(user.isDj){
+  // quand le dj se connecte pour la première fois, appeler GetAllSongs
+  useEffect(() => {
+    if (user.isDj) {
       getAllSongs();
     }
   }, []);
-
-
-  //pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas
-  //3 secondes d'attente pour être sur d'obtenir la réponse des fetchs
+  
+  // uniquement si getAllSongs a répondu (a fait le fetch API spotify), faire l'appel au backend pour enregistrer en BDD
   useEffect(() => {
-    setTimeout(() => {
-      fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
-        .then(response => response.json())
-        .then(data => {
-          setQueueItems(data.queueItems);
-        });
-      fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`)
-        .then(response => response.json())
-        .then(data => {
-          setNowPlaying(data.nowPlaying);
-        });
-    }, 3000);
+    if(user.isDj) {  
+    updateDatabase();
+  }
+  }, [resQueue, resNowPlaying]);
+ 
+  //déclaration de fonctions appel backend pour obtenir la queue et le nowPlaying
+ function getQueue(){
+  fetch(`${backendUrl}/queue/queueitems/${user.partyName}`)
+  .then(response => response.json())
+  .then(data => {
+    setQueueItems(data.queueItems);
+  });
+  };
+
+function getNowPlaying(){
+  fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`)
+  .then(response => response.json())
+  .then(data => {
+    setNowPlaying(data.nowPlaying);
+  }); 
+  }
+
+  //A l'ouverture pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas.
+  // recommence à chaque fois qu'il y a un changement dans queueItems pour s'afficher quand on a bien récupéré la réponse du back
+  useEffect(() => {
+   getQueue();
+   getNowPlaying();   
+  }, [queueItems]);  
+
+
+  // on refresh : vider database, refaire l'appel API spotify et réenregistrer.
+  // pour l'instant problème avec la queue, il faut refresh 2 fois pour qu'elle soit a jour
+  // pour tester invité, besoin d'ouvrir les deux à la fois sur deux téléphones et voir ce qu'il se passe
+  // quand le dj modifie la playlist
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      if(user.isDj){
+        await fetch(`${backendUrl}/queue/queueitems/${user.partyName}`,  { method: 'DELETE' });
+        await fetch(`${backendUrl}/queue/nowplaying/${user.partyName}`,  { method: 'DELETE' });
+        await getAllSongs();
+        await updateDatabase();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    console.log("queue", queueItems)
+    setRefreshing(false);
   }, []);
-
- // console.log les queueItems et now a chaque changement pour débuggage
-  // useEffect(() => {
-  //   if (queueItems.length > 0) {
-  //     console.log("queueItems", queueItems);
-  //   }
-  // }, [queueItems]);
-
-  // useEffect(() => {
-  //   if(nowPlaying !== ''){
-  //   console.log("now playing", nowPlaying);
-  // }
-  // }, [nowPlaying]);
-
-
-//list en dur de la queue
-    // const list = [
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //     {
-    //       name: 'Amy Farha',
-    //       avatar_url: 'https://static.qobuz.com/images/covers/6b/ch/zn433rr1qch6b_600.jpg',
-    //       subtitle: 'Vice President'
-    //     },
-    //     {
-    //       name: 'Chris Jackson',
-    //       avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-    //       subtitle: 'Vice Chairman'
-    //     },
-    //   ]
- //nowPlaying en dur 
-      // const users = [
-      //   {
-      //     name: 'Amy Farha',
-      //     avatar_url: 'https://static.fnac-static.com/multimedia/FR/Images_Produits/FR/fnac.com/Visual_Principal_340/1/2/7/5099931916721/tsp20121221100041/Prestige.jpg',
-      //     subtitle: 'Vice President'
-      //   },
-      //  ]
-
-    
+  
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -206,7 +193,12 @@ export default function PlaylistScreen() {
       <View style={styles.contentdivider}>
       <View style={styles.divider2}></View>
       </View>
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} refreshControl={
+    <RefreshControl
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+    />
+  }>
       {queueItems && <View style={styles.list}>{
             queueItems.map((l, i) => (
             <ListItem key={i} bottomDivider style={styles.listitem}>

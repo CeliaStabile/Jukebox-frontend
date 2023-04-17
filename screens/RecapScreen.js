@@ -16,7 +16,7 @@ import {
    
     const backendUrl = 'https://jukebox-backend.vercel.app'
     const user = useSelector((state) => state.user.value);
-    
+     
     const handleSubmit = () => {
       if(user.isDj && user.partyName){
       fetch(`${backendUrl}/newparty`, {
@@ -30,7 +30,7 @@ import {
     }
   };
     
-
+ 
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
