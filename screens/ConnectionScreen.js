@@ -53,7 +53,7 @@ import { useNavigation } from '@react-navigation/native';
         // to fetch token after authorizationEndpoint
         // this must be set to false
         usePKCE: false,
-        redirectUri: "exp://exp.host/@celias38/jukebox",
+        redirectUri: "exp://192.168.43.212:19000",
       },
       discovery
     );
