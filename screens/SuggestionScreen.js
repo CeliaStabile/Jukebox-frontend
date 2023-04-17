@@ -17,6 +17,7 @@ import {
     View,  
     TouchableOpacity,
     ScrollView,
+    SafeAreaView,
     FlatList,
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
@@ -141,8 +142,8 @@ async function recherche(value) {
       </View>
 
       {!user.isDj && 
-      <View style={styles.searchbar}>
-            <Searchbar
+      <View style={styles.searchbarcontainer}>
+            <Searchbar style={styles.searchbar}
               platform="default"            
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
@@ -150,18 +151,21 @@ async function recherche(value) {
               onSubmitEditing={() => recherche(input)}
               value={input}
               />
-            <FlatList
-                data={resultats}
-                renderItem={({ item }) => (
-                  <View style={styles.song}>
-                    
-                    <TouchableOpacity onPress={() => ajoutsuggestion(item)}>
-                   <Text >Titre : {item.title}, Artiste : {item.artist}</Text>
-                   </TouchableOpacity>
-                 </View>
-                )}
-                keyExtractor={(item) => item.uri}
-            />
+            <SafeAreaView style={styles.flatcontainer}>
+              <FlatList style={styles.flatlist}
+                  data={resultats}
+                  renderItem={({ item }) => (
+                    <View style={styles.flatsong}>                      
+                      <TouchableOpacity style={styles.flatitem} onPress={() => ajoutsuggestion(item)}>
+                      
+                        <Text style={styles.flattitle}>{item.title}</Text>
+                        <Text style={styles.flatartist}>{item.artist}</Text>
+                      </TouchableOpacity>
+                  </View>
+                  )}
+                  keyExtractor={(item) => item.uri}
+              />
+            </SafeAreaView>
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
               <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
@@ -230,7 +234,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       color: '#581B98',
     },
-    searchbar: {
+    searchbarcontainer: {
       // backgroundColor: 'red',
       justifyContent: 'center',
       paddingLeft: 20,
@@ -238,8 +242,13 @@ const styles = StyleSheet.create({
       marginTop: 45,
       marginBottom: 45,
     },
+    searchbar:{
+      borderColor: '#F3558E',
+      borderWidth: 2,
+    },
     list: {
       height: '50%',
+
     },
     listitem: {
       borderBottomColor: '#9C1DE7',
@@ -290,8 +299,36 @@ const styles = StyleSheet.create({
     rightSwipeItem: {
       width: 1,
     },
-    song:{
-      backgroundColor: "white",
+    flatcontainer:{
+      marginTop: StatusBar.currentHeight || 0,
+      // backgroundColor:'red',
+      
+    },
+    flatlist:{
+      backgroundColor:'#eee8f4',
+      borderRadius: 30,
+      // borderColor: '#F3558E',
+      // borderWidth: 2,      
+    },
+    flatsong:{
+
+    },
+    flatitem:{
+      borderBottomColor: '#9C1DE7',
+      borderBottomWidth: 1,
+      height:0,
+      margin:10,
+    },
+    flattitle:{
+      color: '#1A1C1E',
+      fontSize: 16,
+      fontWeight: '400',
+    },
+    flatartist:{
+      color: '#49454F',
+      // fontSize: 14,
+      // fontWeight: '400',
+      // marginBottom:30,
     },
     
   },
