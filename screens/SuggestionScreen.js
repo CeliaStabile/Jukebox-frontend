@@ -137,8 +137,7 @@ async function recherche(value) {
               })};
           }     
   
-
-          async function addSong(l) {
+async function addSong(l) {
             //attention ça ajoute quand on swippe vers la gauche et non vers la droite
             if (user.isDj) {
               const addPlaylist = await fetch(
@@ -152,11 +151,33 @@ async function recherche(value) {
                   json: true,
                 }
               );
-            }
+              
+console.log('bien envoyé à la queue');
 
-        console.log('bien envoyé à la queue');
+//pour supprimer ensuite au back end et mettre à jour la liste des suggestions
 
-          }
+}}
+
+     function deleteSuggestion(l) {
+      console.log('hello');
+      if(user.isDj) {
+       //route pour mettre à jour le sous document suggestion et bien ne selectionné que l'objet avec l'uri(unique)        
+         fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: user.partyName,
+              uri: l.uri,
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.result) {
+                console.log('supprimé des suggestions')
+              }
+            });
+        }  
+       }  
           
   
           
@@ -214,14 +235,21 @@ async function recherche(value) {
             return(
             
                         <Swipeable
-              renderRightActions={(index, song) => (
-                <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
-                <View style={styles.rightSwipeItem} >
+              renderLeftActions={(index, song) => (
+                <TouchableOpacity onPress={() => onSwipeableLeftOpen(l)}>
+                <View style={styles.leftSwipeItem} >
                 </View>
                 </TouchableOpacity>
               )}
-              onSwipeableRightOpen={() => { addSong(l)
+              onSwipeableLeftOpen={() => { addSong(l), deleteSuggestion(l);
                 }} 
+                renderRightActions={(index, song) => (
+                  <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
+                    <View style={styles.rightSwipeItem} >
+                    </View>
+                  </TouchableOpacity>
+                )}
+                onSwipeableRightOpen={() => { deleteSuggestion(l); }}
                                >
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.url_image}} />
