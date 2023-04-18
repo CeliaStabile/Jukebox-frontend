@@ -38,7 +38,7 @@ import { useNavigation } from '@react-navigation/native';
     useAuthRequest(
       {
         responseType: ResponseType.Token,
-        clientId: "db1242ce93da4429a427639434f2becd",
+        clientId: "f23691598dc1491190e048505e50122d",
         scopes: [
           "user-read-currently-playing",
           "user-read-recently-played",
