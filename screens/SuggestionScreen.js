@@ -33,9 +33,8 @@ export default function SuggestionScreen() {
        const [resultats, setResultats] = useState([]);
        const [search, setSearch] = useState("");
        const [suggestion, setSuggestion]= useState([]);
-       const [isLiked, setIsLiked] = useState(false);
-
-       const dispatch = useDispatch();
+      const [personalLikes, setPersonalLikes] = useState([]); //tab des songs liké par l'utilisateur 
+      const dispatch = useDispatch();
 
 //déclaration de fonction pour obtenir les suggestions du backend
      async function getSuggestions() {
@@ -108,10 +107,9 @@ async function recherche(value) {
               })}
       
 
-      
+     //ajouter like a BDD 
           function ajoutLike(i) {
             if(!user.isDj){
-            // fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },   
@@ -119,11 +117,27 @@ async function recherche(value) {
               .then(response => response.json())
               .then(data => {
                 if (data.result) {
-                  console.log('A voté')
+                  console.log(data.message);
                 }
               })};
           }     
   
+
+          function removeLike(i) {
+            if(!user.isDj){
+              fetch(`${backendUrl}/suggestions/dislike/${user.partyName}/${i.uri}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },   
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log(data.message)
+                }
+              })};
+          }     
+  
+
           async function addSong(l) {
             //attention ça ajoute quand on swippe vers la gauche et non vers la droite
             if (user.isDj) {
@@ -140,24 +154,8 @@ async function recherche(value) {
               );
             }
 
-console.log('bien envoyé à la queue');
-/*
-pour supprimer ensuite au back end et mettre à jour la liste des suggestions
-fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                name: user.partyName,
-                uri: l.uri,
-              })
-            })
-              .then(response => response.json())
-              .then(data => {
-                if (data.result) {
-                  console.log('supprimé des suggestions')
-                }
-              });
-*/
+        console.log('bien envoyé à la queue');
+
           }
           
   
@@ -212,7 +210,9 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
-          suggestion.map((l, i) => (
+          suggestion.map((l, i) => {
+            return(
+            
                         <Swipeable
               renderRightActions={(index, song) => (
                 <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
@@ -229,11 +229,22 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
                 <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
-
-             <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
+                <TouchableOpacity onPress={()=> 
+                  {if(personalLikes.includes(l.uri)){
+                  personalLikes.splice(l.uri, 1);
+                  removeLike(l)
+                }
+                  else {
+                     setPersonalLikes([...personalLikes, l.uri]);
+                     ajoutLike(l);
+                    }
+                     }
+                  } >
+             <LikeButton isLiked={personalLikes.includes(l.uri)} song={l} likeCount={l.likeCount}/>
+             </TouchableOpacity>
             </ListItem>
             </Swipeable>
-            )
+            )}
             )
           }
         </View>
