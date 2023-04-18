@@ -110,7 +110,7 @@ async function recherche(value) {
 
       
           function ajoutLike(i) {
-            
+            if(!user.isDj){
             // fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               method: 'PUT',
@@ -121,9 +121,46 @@ async function recherche(value) {
                 if (data.result) {
                   console.log('A voté')
                 }
-              });
+              })};
           }     
+  
+          async function addSong(l) {
+            //attention ça ajoute quand on swippe vers la gauche et non vers la droite
+            if (user.isDj) {
+              const addPlaylist = await fetch(
+                `https://api.spotify.com/v1/me/player/queue?uri=${l.uri}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                  json: true,
+                }
+              );
+            }
+
+console.log('bien envoyé à la queue');
+/*
+pour supprimer ensuite au back end et mettre à jour la liste des suggestions
+fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: user.partyName,
+                uri: l.uri,
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log('supprimé des suggestions')
+                }
+              });
+*/
+          }
           
+  
           
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -176,14 +213,15 @@ async function recherche(value) {
         <View style={styles.list}>{
           suggestion.map((l, i) => (
                         <Swipeable
-              renderRightActions={(index) => (
-                <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
+              renderRightActions={(index, song) => (
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
                 <View style={styles.rightSwipeItem} >
                 </View>
                 </TouchableOpacity>
               )}
-              onSwipeableRightOpen={() => { handleDelete(i);
-              }} >
+              onSwipeableRightOpen={() => { addSong(l)
+                }} 
+                               >
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.url_image}} />
                 <ListItem.Content style={styles.listcontent}>

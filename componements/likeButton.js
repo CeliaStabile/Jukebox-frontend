@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
+
 
 const LikeButton = (props) => {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
+  const user = useSelector((state) => state.user.value);
+
 
   const handleLike = (l) => {
-    if (!liked) {
+    if (!liked && !user.isDj) {
       setLiked(true);
       setCount(props.likeCount);
       props.onPress(l);
