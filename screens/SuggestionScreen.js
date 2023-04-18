@@ -222,12 +222,19 @@ console.log('bien envoyé à la queue');
                         <Swipeable
               renderLeftActions={(index, song) => (
                 <TouchableOpacity onPress={() => onSwipeableLeftOpen(l)}>
-                <View style={styles.rightSwipeItem} >
+                <View style={styles.leftSwipeItem} >
                 </View>
                 </TouchableOpacity>
               )}
               onSwipeableLeftOpen={() => { addSong(l), deleteSuggestion(l);
                 }} 
+                renderRightActions={(index, song) => (
+                  <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
+                    <View style={styles.rightSwipeItem} >
+                    </View>
+                  </TouchableOpacity>
+                )}
+                onSwipeableRightOpen={() => { deleteSuggestion(l); }}
                                >
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.url_image}} />
