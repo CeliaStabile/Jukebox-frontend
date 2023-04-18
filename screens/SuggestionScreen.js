@@ -262,11 +262,11 @@ console.log('bien envoyé à la queue');
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
                 <TouchableOpacity onPress={()=> 
-                  {if(personalLikes.includes(l.uri)){
+                  {if(personalLikes.includes(l.uri) && !user.isDj){
                   personalLikes.splice(l.uri, 1);
                   removeLike(l)
                 }
-                  else {
+                  else if(!personalLikes.includes(l.uri) && !user.isDj) {
                      setPersonalLikes([...personalLikes, l.uri]);
                      ajoutLike(l);
                     }
