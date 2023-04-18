@@ -34,6 +34,7 @@ export default function SuggestionScreen() {
        const [search, setSearch] = useState("");
        const [suggestion, setSuggestion]= useState([]);
       const [personalLikes, setPersonalLikes] = useState([]); //tab des songs liké par l'utilisateur 
+      const [alerte, setAlerte] =useState(''); //pour affichage si chanson déjà ajoutée
       const dispatch = useDispatch();
 
 //déclaration de fonction pour obtenir les suggestions du backend
@@ -73,6 +74,9 @@ fetch(`${backendUrl}/suggestions/new`, {
       .then(data => {
         if (data.result) {
           console.log('envoyé au backend')
+        }
+        else {
+          setAlerte(data.error);
         }
       });
     setResultats([]);
@@ -218,7 +222,7 @@ console.log('bien envoyé à la queue');
               />
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
-              {/* <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text> */}
+              <Text style={styles.error}>{alerte}</Text>
             </View>
       </View>
       

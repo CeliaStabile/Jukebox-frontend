@@ -35,11 +35,11 @@ import {
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
         <ConfettiCanon
-        count={200}
-        origin={{x: -10, y: 0}}
-        colors={['#ff00ff', '#00ffff', '#00ff00']}
+        count={700}
+        origin={{x: 0, y: 0}}
+        colors={['#FF00FF', '#FFD700', '#00FFFF']}
         explosionSpeed={500}
-        fallSpeed={3000}
+        fallSpeed={1500}
         fadeOut={true}/>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
