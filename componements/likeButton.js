@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 
 const LikeButton = (props) => {
-  const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
   const user = useSelector((state) => state.user.value);
 
@@ -19,16 +18,16 @@ const LikeButton = (props) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => handleLike(props.song)}>
+    
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5, }}>
         <Text style={{ marginRight: 8, }}>{props.likeCount}</Text>
-        {liked ? (
+        {props.isLiked ? (
           <Icon name="heart" size={24} color="#F3558E" />
         ) : (
           <Icon name="heart-outline" size={24} color="black" />
         )}
       </View>
-    </TouchableOpacity>
+   
   );
 };
 

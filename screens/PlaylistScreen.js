@@ -14,10 +14,7 @@ import {
     ScrollView,
     RefreshControl,
   } from 'react-native';
-  import { useSelector, useDispatch } from 'react-redux';
-
-  //
-  import ConfettiCannon from 'react-native-confetti-cannon';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function PlaylistScreen() {
@@ -30,6 +27,7 @@ export default function PlaylistScreen() {
   const [nowPlaying, setNowPlaying] = useState('');
   const backendUrl= "https://jukebox-backend.vercel.app"
   const [refreshing, setRefreshing] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
 
   //déclaration de la fonction qui permet de fetcher la queue et now playing du DJ et de l'enregistrer
@@ -220,6 +218,7 @@ function getNowPlaying(){
     
   );
 }
+
 
 const styles = StyleSheet.create({
     background: {

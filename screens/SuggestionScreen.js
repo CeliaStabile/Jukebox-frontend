@@ -19,8 +19,8 @@ import {
     ScrollView,
     FlatList,
   } from 'react-native';
-  import { useSelector, useDispatch } from 'react-redux';
-  import LikeButton from '../componements/likeButton';
+import { useSelector, useDispatch } from 'react-redux';
+import LikeButton from '../componements/likeButton';
 import { addSuggestion } from '../reducers/user';
  
 export default function SuggestionScreen() {
@@ -33,9 +33,8 @@ export default function SuggestionScreen() {
        const [resultats, setResultats] = useState([]);
        const [search, setSearch] = useState("");
        const [suggestion, setSuggestion]= useState([]);
-       const [isLiked, setIsLiked] = useState(false);
-
-       const dispatch = useDispatch();
+      const [personalLikes, setPersonalLikes] = useState([]); //tab des songs liké par l'utilisateur 
+      const dispatch = useDispatch();
 
 //déclaration de fonction pour obtenir les suggestions du backend
      async function getSuggestions() {
@@ -108,10 +107,9 @@ async function recherche(value) {
               })}
       
 
-      
+     //ajouter like a BDD 
           function ajoutLike(i) {
             if(!user.isDj){
-            // fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },   
@@ -119,7 +117,22 @@ async function recherche(value) {
               .then(response => response.json())
               .then(data => {
                 if (data.result) {
-                  console.log('A voté')
+                  console.log(data.message);
+                }
+              })};
+          }     
+  
+
+          function removeLike(i) {
+            if(!user.isDj){
+              fetch(`${backendUrl}/suggestions/dislike/${user.partyName}/${i.uri}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },   
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.result) {
+                  console.log(data.message)
                 }
               })};
           }     
@@ -220,8 +233,9 @@ console.log('bien envoyé à la queue');
         
         
         <View style={styles.list}>{
-          suggestion.map((l, i) => (
-            user.isDj ?  
+          suggestion.map((l, i) => {
+            return(
+            
                         <Swipeable
               renderLeftActions={(index, song) => (
                 <TouchableOpacity onPress={() => onSwipeableLeftOpen(l)}>
@@ -245,38 +259,31 @@ console.log('bien envoyé à la queue');
                 <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
-                <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
+                <TouchableOpacity onPress={()=> 
+                  {if(personalLikes.includes(l.uri)){
+                  personalLikes.splice(l.uri, 1);
+                  removeLike(l)
+                }
+                  else {
+                     setPersonalLikes([...personalLikes, l.uri]);
+                     ajoutLike(l);
+                    }
+                     }
+                  } >
+             <LikeButton isLiked={personalLikes.includes(l.uri)} song={l} likeCount={l.likeCount}/>
+             </TouchableOpacity>
             </ListItem>
-            </Swipeable> 
-
-
-
-            :   
-
-
-
-          <ListItem key={i} bottomDivider style={styles.listitem}>
-            <Avatar source={{uri: l.url_image}} />
-            <ListItem.Content style={styles.listcontent}>
-            <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
-            <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
-            </ListItem.Content>
-            <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
-          </ListItem> 
-
-         )
+            </Swipeable>
+            )}
             )
-              } 
-        
-        </View>        
-      </ScrollView> 
-      </KeyboardAvoidingView>    
-    </ImageBackground>
-
-        );
-      }
-
-
+          }
+        </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
+      </ImageBackground>
+    
+  );
+}
 
 const styles = StyleSheet.create({
     background: {

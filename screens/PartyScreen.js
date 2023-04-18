@@ -12,7 +12,9 @@ import {
   Platform} from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
   import { getPartyName } from '../reducers/user';
+  import ConfettiCanon from 'react-native-confetti-cannon';
 
+ 
   export default function ConnectionScreen({navigation}) {
     const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
@@ -39,6 +41,13 @@ import {
 
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
+       <ConfettiCanon
+        count={200}
+        origin={{x: -10, y: 0}}
+        colors={['#ff00ff', '#00ffff', '#00ff00']}
+        explosionSpeed={500}
+        fallSpeed={3000}
+        fadeOut={true}/>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         {/* <View style={styles.containerRecap}>
