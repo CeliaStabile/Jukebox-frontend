@@ -38,7 +38,7 @@ import { useNavigation } from '@react-navigation/native';
     useAuthRequest(
       {
         responseType: ResponseType.Token,
-        clientId: "c6d8fa104582425a99c8ee0bc153f202",
+        clientId: "f23691598dc1491190e048505e50122d",
         scopes: [
           "user-read-currently-playing",
           "user-read-recently-played",
@@ -53,7 +53,7 @@ import { useNavigation } from '@react-navigation/native';
         // to fetch token after authorizationEndpoint
         // this must be set to false
         usePKCE: false,
-        redirectUri: "exp://exp.host/@celias38/jukebox",
+        redirectUri: "exp://192.168.0.10:19000",
       },
       discovery
     );

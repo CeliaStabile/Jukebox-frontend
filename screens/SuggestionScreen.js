@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Icon, ListItem, Avatar } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -106,6 +105,9 @@ async function recherche(value) {
               })}
       
 
+       
+        
+      
           function ajoutLike(i) {
             
             fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
@@ -122,40 +124,44 @@ async function recherche(value) {
                 }
               });
           }     
+  
+          async function addSong(l) {
+            //attention ça ajoute quand on swippe vers la gauche et non vers la droite
+            if (user.isDj) {
+              const addPlaylist = await fetch(
+                `https://api.spotify.com/v1/me/player/queue?uri=${l.uri}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                  json: true,
+                }
+              );
+            }
 
-
-
-
-
-          const handleDelete = (index) => {
-            const newSuggestions = [...suggestion];
-            newSuggestions.splice(index, 1);
-            setSuggestion(newSuggestions);
-          };
-
-          // a changer ne fonctionne pas
-          function handleDeleted(i) {
-
-            fetch(`${backendUrl}/suggestions/${user.partyName}/${i.uri}`, {
-              meyhod: 'DELETE',
+console.log('bien envoyé à la queue');
+/*
+pour supprimer ensuite au back end et mettre à jour la liste des suggestions
+fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
+              method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                partyName: user.partyName,
-                uri: i.uri
+                name: user.partyName,
+                uri: l.uri,
               })
             })
-            .then(response => response.json())
+              .then(response => response.json())
               .then(data => {
                 if (data.result) {
-                  console.log('A supprimé');
+                  console.log('supprimé des suggestions')
                 }
-                
               });
-          }     
+*/
+          }
           
-          
-        //  const handleAddToPlaylist = 
-          
+  
           
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
@@ -170,8 +176,8 @@ async function recherche(value) {
       </View>
 
       {!user.isDj && 
-      <View style={styles.searchbarcontainer}>
-            <Searchbar style={styles.searchbar}
+      <View style={styles.searchbar}>
+            <Searchbar
               platform="default"            
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
@@ -179,21 +185,18 @@ async function recherche(value) {
               onSubmitEditing={() => recherche(input)}
               value={input}
               />
-            
-              <FlatList style={styles.flatlist}
-                  data={resultats}
-                  renderItem={({ item }) => (
-                    <View style={styles.flatsong}>                      
-                      <TouchableOpacity style={styles.flatitem} onPress={() => ajoutsuggestion(item)}>
-                      
-                        <Text style={styles.flattitle}>{item.title}</Text>
-                        <Text style={styles.flatartist}>{item.artist}</Text>
-                      </TouchableOpacity>
-                  </View>
-                  )}
-                  keyExtractor={(item) => item.uri}
-              />
-          
+            <FlatList
+                data={resultats}
+                renderItem={({ item }) => (
+                  <View style={styles.song}>
+                    
+                    <TouchableOpacity onPress={() => ajoutsuggestion(item)}>
+                   <Text >Titre : {item.title}, Artiste : {item.artist}</Text>
+                   </TouchableOpacity>
+                 </View>
+                )}
+                keyExtractor={(item) => item.uri}
+            />
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
               <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text>
@@ -209,52 +212,28 @@ async function recherche(value) {
 
       <ScrollView style={styles.scroll}>
         <View style={styles.list}>{
-            suggestion.map((l, i) => (
-              user.isDj ?
-                <Swipeable
-                  renderRightActions={(index) => (
-                    <TouchableOpacity onPress={() => onSwipeableRightOpen(index)}>
-                      <View style={styles.rightSwipeItem} />
-                    </TouchableOpacity>
-                  )}
-                  onSwipeableRightOpen={() => {   handleDelete(i) && handleDeleted(i)  }}
+          suggestion.map((l, i) => (
+                        <Swipeable
+              renderRightActions={(index, song) => (
+                <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
+                <View style={styles.rightSwipeItem} >
+                </View>
+                </TouchableOpacity>
+              )}
+              onSwipeableRightOpen={() => { addSong(l)
+                }} 
+                               >
+            <ListItem key={i} bottomDivider style={styles.listitem}>
+                <Avatar source={{uri: l.url_image}} />
+                <ListItem.Content style={styles.listcontent}>
+                <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+                <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+                </ListItem.Content>
 
-
-                  renderLeftActions={(index) => (
-                    <TouchableOpacity onPress={() => onSwipeableLeftOpen(index)}>
-                      <View style={styles.leftSwipeItem} />
-                    </TouchableOpacity>
-                  )}
-                  onSwipeableLeftOpen={() => {  /* handleAddToPlaylist */     }}
-                  >
-                  
-                  <ListItem key={i} bottomDivider style={styles.listitem}>
-                    <Avatar source={{uri: l.url_image}} />
-                    <ListItem.Content style={styles.listcontent}>
-                      <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
-                      <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    {user.isDj && (
-                      <View style={styles.likebutton}>
-                        <LikeButton onPress={()=> ajoutLike(l)} song={l} />
-                      </View>
-                    )}
-                  </ListItem>
-                </Swipeable>
-              :
-                <ListItem key={i} bottomDivider style={styles.listitem}>
-                  <Avatar source={{uri: l.url_image}} />
-                  <ListItem.Content style={styles.listcontent}>
-                    <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
-                    <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
-                  </ListItem.Content>
-                  {user.isDj && (
-                    <View style={styles.likebutton}>
-                      <LikeButton onPress={()=> ajoutLike(l)} song={l} />
-                    </View>
-                  )}
-                </ListItem>
-              )
+                {!user.isDj &&<LikeButton onPress={()=> ajoutLike(l)} song={l} />}
+            </ListItem>
+            </Swipeable>
+            )
             )
           }
         </View>
@@ -287,7 +266,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       color: '#581B98',
     },
-    searchbarcontainer: {
+    searchbar: {
       // backgroundColor: 'red',
       justifyContent: 'center',
       paddingLeft: 20,
@@ -295,13 +274,8 @@ const styles = StyleSheet.create({
       marginTop: 45,
       marginBottom: 45,
     },
-    searchbar:{
-      borderColor: '#F3558E',
-      borderWidth: 2,
-    },
     list: {
       height: '50%',
-
     },
     listitem: {
       borderBottomColor: '#9C1DE7',
@@ -352,44 +326,9 @@ const styles = StyleSheet.create({
     rightSwipeItem: {
       width: 1,
     },
-    flatcontainer:{
-      marginTop: StatusBar.currentHeight || 0,
-      // backgroundColor:'red',
-      
+    song:{
+      backgroundColor: "white",
     },
-    flatlist:{
-      backgroundColor:'#eee8f4',
-      borderRadius: 30,
-      // borderColor: '#F3558E',
-      // borderWidth: 2,      
-    },
-    flatsong:{
-
-    },
-    flatitem:{
-      borderBottomColor: '#9C1DE7',
-      borderBottomWidth: 1,
-      height:0,
-      margin:10,
-    },
-    flattitle:{
-      color: '#1A1C1E',
-      fontSize: 16,
-      fontWeight: '400',
-    },
-    flatartist:{
-      color: '#49454F',
-      // fontSize: 14,
-      // fontWeight: '400',
-      // marginBottom:30,
-    },
-    rightSwipeItem: {
-      width: 1,
-
-    },
-    leftSwipeItem: {
-      width: 1,
-    }
     
   },
 );
