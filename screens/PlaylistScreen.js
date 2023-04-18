@@ -16,6 +16,9 @@ import {
   } from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
 
+  //
+  import ConfettiCannon from 'react-native-confetti-cannon';
+
 
 export default function PlaylistScreen() {
   const user = useSelector((state) => state.user.value);
