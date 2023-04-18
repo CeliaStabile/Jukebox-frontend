@@ -176,7 +176,7 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
 
       {!user.isDj && 
       <View style={styles.searchbar}>
-            <Searchbar
+            <Searchbar style={styles.searchbarcontent}
               platform="default"            
               placeholderTextColor={'#49454E'}
               placeholder="Suggérer un titre ou un artiste"
@@ -184,18 +184,19 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
               onSubmitEditing={() => recherche(input)}
               value={input}
               />
-            <FlatList
-                data={resultats}
-                renderItem={({ item }) => (
-                  <View style={styles.song}>
-                    
-                    <TouchableOpacity onPress={() => ajoutsuggestion(item)}>
-                   <Text >Titre : {item.title}, Artiste : {item.artist}</Text>
-                   </TouchableOpacity>
-                 </View>
-                )}
-                keyExtractor={(item) => item.uri}
-            />
+            <FlatList style={styles.flatlist}
+                  data={resultats}
+                  renderItem={({ item }) => (
+                    <View style={styles.flatsong}>                      
+                      <TouchableOpacity style={styles.flatitem} onPress={() => ajoutsuggestion(item)}>
+                      
+                        <Text style={styles.flattitle}>{item.title}</Text>
+                        <Text style={styles.flatartist}>{item.artist}</Text>
+                      </TouchableOpacity>
+                  </View>
+                  )}
+                  keyExtractor={(item) => item.uri}
+              />
             <StatusBar style="auto" />
             <View style={styles.errorphrase}>
               {/* <Text style={styles.error}>Ce titre a déjà été proposé 😕</Text> */}
@@ -210,9 +211,12 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
       </View>
 
       <ScrollView style={styles.scroll}>
+        
+        
         <View style={styles.list}>{
-          suggestion.map((l, i) => (
-                        <Swipeable
+         suggestion.map((l, i) => (   
+            user.isDj ?  
+            <Swipeable
               renderRightActions={(index, song) => (
                 <TouchableOpacity onPress={() => onSwipeableRightOpen(l)}>
                 <View style={styles.rightSwipeItem} >
@@ -221,27 +225,45 @@ fetch(`${backendUrl}/suggestions/${user.partyName}/${l.uri}`, {
               )}
               onSwipeableRightOpen={() => { addSong(l)
                 }} 
-                               >
+                               >                       
             <ListItem key={i} bottomDivider style={styles.listitem}>
                 <Avatar source={{uri: l.url_image}} />
                 <ListItem.Content style={styles.listcontent}>
                 <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
-
-             <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
+                <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
             </ListItem>
-            </Swipeable>
+            </Swipeable> 
+
+
+
+            :
+
+
+
+          <ListItem key={i} bottomDivider style={styles.listitem}>
+            <Avatar source={{uri: l.url_image}} />
+            <ListItem.Content style={styles.listcontent}>
+            <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+            <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+            </ListItem.Content>
+            <LikeButton onPress={()=> ajoutLike(l)} song={l} likeCount={l.likeCount}/>
+          </ListItem> 
+
+         )
             )
-            )
-          }
-        </View>
-      </ScrollView>
-      </KeyboardAvoidingView>
-      </ImageBackground>
-    
-  );
-}
+              } 
+        
+        </View>        
+      </ScrollView> 
+      </KeyboardAvoidingView>    
+    </ImageBackground>
+
+        );
+      }
+
+
 
 const styles = StyleSheet.create({
     background: {
@@ -273,6 +295,10 @@ const styles = StyleSheet.create({
       marginTop: 45,
       marginBottom: 45,
     },
+    searchbarcontent:{
+      borderColor: '#F3558E',
+      borderWidth: 2,
+    },
     list: {
       height: '50%',
     },
@@ -303,7 +329,6 @@ const styles = StyleSheet.create({
     divider1:{
       borderBottomColor: '#F3558E',
       borderBottomWidth: 1,
-      // marginBottom: 20,
       marginTop: 20,      
       width: '70%',      
     },
@@ -325,9 +350,43 @@ const styles = StyleSheet.create({
     rightSwipeItem: {
       width: 1,
     },
-    song:{
-      backgroundColor: "white",
+    flatcontainer:{
+      marginTop: StatusBar.currentHeight || 0,
+      // backgroundColor:'red',     
     },
+    flatlist:{
+      backgroundColor:'#eee8f4',
+      borderRadius: 30,
+      // borderColor: '#F3558E',
+      // borderWidth: 2,      
+    },
+    flatsong:{
+
+    },
+    flatitem:{
+      borderBottomColor: '#9C1DE7',
+      borderBottomWidth: 1,
+      height:50,
+      margin:10,
+    },
+    flattitle:{
+      color: '#1A1C1E',
+      fontSize: 16,
+      fontWeight: '400',
+    },
+    flatartist:{
+      color: '#49454F',
+      // fontSize: 14,
+      // fontWeight: '400',
+      // marginBottom:30,
+    },
+    rightSwipeItem: {
+      width: 1,
+
+    },
+    leftSwipeItem: {
+      width: 1,
+    }
     
   },
 );
