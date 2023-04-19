@@ -9,7 +9,8 @@ import {
   Image,  
   TouchableOpacity,
   TextInput,
-  Platform} from 'react-native';
+  Platform,
+  Keyboard} from 'react-native';
   import { useSelector, useDispatch } from 'react-redux';
   import { getPartyName } from '../reducers/user';
   import ConfettiCanon from 'react-native-confetti-cannon';
@@ -20,6 +21,7 @@ import {
     const dispatch = useDispatch();
     const [partyName, setPartyName] = useState("");
     const [error, setError] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const backendUrl = 'https://jukebox-backend.vercel.app'
 
@@ -29,25 +31,22 @@ import {
         headers: { 'Content-Type': 'application/json' },
       }).then(response => response.json())
       .then(data => {
-        if (data.result) {
-          navigation.navigate('TabNavigator');
+        if (data.result) {  
+          setShowConfetti(true);
           dispatch(getPartyName(partyName));
+          setTimeout(() => {
+            navigation.navigate('TabNavigator');
+          }, 3700);        
         } else {
           setError(true)
         }
       });
-      };
+    };
+
    console.log(user);
 
   return (
-    <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
-       <ConfettiCanon
-        count={700}
-        origin={{x: 0, y: 0}}
-        colors={['#FF00FF', '#FFD700', '#00FFFF']}
-        explosionSpeed={500}
-        fallSpeed={1500}
-        fadeOut={true}/>
+    <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>    
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         {/* <View style={styles.containerRecap}>
@@ -68,12 +67,20 @@ import {
             value={partyName}
             style={styles.input}
           />
-          <TouchableOpacity onPress={() => {handleSubmit()}} style={styles.button} activeOpacity={0.8}>
+          <TouchableOpacity onPress={() => {handleSubmit()
+           Keyboard.dismiss()}} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
           {error && <Text style={styles.error}>Cette soirée n'existe pas 😖</Text>}
-        </View>
-
+          {showConfetti && (
+          <ConfettiCanon
+          count={200}
+          origin={{x: -10, y: 0}}
+          colors={['#ff2e2e', '#F0F', '#FFFACD', '#00FFFF', '#7FFFD4', '#00FF00', '#FF00FF', '#FFD700', '#FF7F50']}
+          explosionSpeed={500}
+          fallSpeed={3000}
+          fadeOut={true}/>)} 
+         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
   );
@@ -160,4 +167,6 @@ const styles = StyleSheet.create({
     // marginTop: 20,      
     width: '80%',      
   },
+ 
+
 });

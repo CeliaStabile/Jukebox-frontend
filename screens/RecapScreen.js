@@ -17,6 +17,7 @@ import {
    
     const backendUrl = 'https://jukebox-backend.vercel.app'
     const user = useSelector((state) => state.user.value);
+    const [showConfetti, setShowConfetti] = useState(false);
      
     const handleSubmit = () => {
       if(user.isDj && user.partyName){
@@ -27,20 +28,18 @@ import {
            name: user.partyName,
            })
       }).then(response => response.json())
-      navigation.navigate('TabNavigator');
+      .then(() => {
+        setShowConfetti(true);
+        setTimeout(() => {
+          navigation.navigate('TabNavigator');
+        }, 3700);
+      })    
     }
   };
     
  
   return (
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
-        <ConfettiCanon
-        count={700}
-        origin={{x: 0, y: 0}}
-        colors={['#FF00FF', '#FFD700', '#00FFFF']}
-        explosionSpeed={500}
-        fallSpeed={1500}
-        fadeOut={true}/>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
         <View style={styles.containerRecap}>
@@ -57,6 +56,14 @@ import {
           <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={0.8}>
             <Text style={styles.textButton}>Go to Party !</Text>
           </TouchableOpacity>
+          {showConfetti && (
+           <ConfettiCanon
+            count={200}
+            origin={{x: -10, y: 0}}
+            colors={['#ff2e2e', '#F0F', '#FFFACD', '#00FFFF', '#7FFFD4', '#00FF00', '#FF00FF', '#FFD700', '#FF7F50']}
+            explosionSpeed={500}
+            fallSpeed={2000}
+            fadeOut={true}/>)} 
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
@@ -128,6 +135,7 @@ const styles = StyleSheet.create({
     // marginTop: 20,      
     width: '90%',      
   },
+ 
 });
 
 

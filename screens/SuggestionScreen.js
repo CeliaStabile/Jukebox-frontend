@@ -405,11 +405,11 @@ const styles = StyleSheet.create({
       // marginBottom:30,
     },
     rightSwipeItem: {
-      width: 1,
+      width: 5,
 
     },
     leftSwipeItem: {
-      width: 1,
+      width: 5,
     }
     
   },
