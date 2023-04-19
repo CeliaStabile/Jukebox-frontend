@@ -19,6 +19,8 @@ import {
     const user = useSelector((state) => state.user.value);
     const [showConfetti, setShowConfetti] = useState(false);
      
+    //appel de la route pour créer une nouvelle party avec le nom de la soirée
+    //et confettis !
     const handleSubmit = () => {
       if(user.isDj && user.partyName){
       fetch(`${backendUrl}/newparty`, {
@@ -131,8 +133,6 @@ const styles = StyleSheet.create({
   divider:{
     borderBottomColor: '#F3558E',
     borderBottomWidth: 1,
-    // marginBottom: 20,
-    // marginTop: 20,      
     width: '90%',      
   },
  

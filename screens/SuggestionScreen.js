@@ -5,7 +5,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Searchbar } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-
 import {
   ImageBackground,
   Image,
@@ -83,6 +82,7 @@ export default function SuggestionScreen() {
     setResultats([]);
   }
 
+  //déclaration de fonction recherche de suggestions
   async function recherche(value) {
     const trackParameters = {
       method: "GET",
@@ -91,7 +91,6 @@ export default function SuggestionScreen() {
         Authorization: `Bearer ${user.token}`,
       },
     };
-    // pour avoir titanic en premier il faut faire un tri selon popularité de la chanson pour l'avoir en premier
 
     const track = await fetch(
       `https://api.spotify.com/v1/search?query=${input}&type=track,artist&market=FR&offset=0&limit=5`,
@@ -113,7 +112,7 @@ export default function SuggestionScreen() {
       });
   }
 
-  //ajouter like a BDD
+  //ajouter like à BDD
   function ajoutLike(i) {
     if (!user.isDj) {
       fetch(`${backendUrl}/suggestions/like/${user.partyName}/${i.uri}`, {
@@ -129,6 +128,7 @@ export default function SuggestionScreen() {
     }
   }
 
+  //retirer un like dans BDD
   function removeLike(i) {
     if (!user.isDj) {
       fetch(`${backendUrl}/suggestions/dislike/${user.partyName}/${i.uri}`, {
@@ -144,8 +144,8 @@ export default function SuggestionScreen() {
     }
   }
 
+  //déclaration fonction ajout de chanson depuis les suggestions vers la queue au swipe right du DJ
   async function addSong(l) {
-    //attention ça ajoute quand on swippe vers la gauche et non vers la droite
     if (user.isDj) {
       const addPlaylist = await fetch(
         `https://api.spotify.com/v1/me/player/queue?uri=${l.uri}`,
@@ -158,13 +158,11 @@ export default function SuggestionScreen() {
           json: true,
         }
       );
-
       console.log("bien envoyé à la queue");
-
-      //pour supprimer ensuite au back end et mettre à jour la liste des suggestions
     }
   }
 
+  //fonction refuser une suggestion et la supprimer au swipe left du DJ
   function deleteSuggestion(l) {
     console.log("hello");
     if (user.isDj) {
@@ -196,7 +194,7 @@ export default function SuggestionScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.party}>
-        {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
+          {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
           {user.isDj && Platform.OS === "ios" && suggestion.length !== 0 && (
             <Text style={styles.title}>Swipe 👈 ou 👉</Text>
           )}
@@ -291,7 +289,7 @@ export default function SuggestionScreen() {
                           <TouchableOpacity
                             onPress={() => {
                               deleteSuggestion(l);
-                            }} 
+                            }}
                           >
                             <View style={styles.androidButton}>
                               <Text style={styles.androidIconDown}>👎</Text>
