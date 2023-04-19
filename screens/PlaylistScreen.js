@@ -56,9 +56,8 @@ export default function PlaylistScreen() {
         url_image: item.album.images[2].url,
         uri: item.uri,
       }));
-  
-      await setResNowPlaying(nowPlaying);
       await setResQueue(queue);
+      await setResNowPlaying(nowPlaying);
     } catch (error) {
       console.error(error);
     }
