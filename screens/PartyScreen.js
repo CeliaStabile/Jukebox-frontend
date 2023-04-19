@@ -78,7 +78,7 @@ import {
           origin={{x: -10, y: 0}}
           colors={['#ff2e2e', '#F0F', '#FFFACD', '#00FFFF', '#7FFFD4', '#00FF00', '#FF00FF', '#FFD700', '#FF7F50']}
           explosionSpeed={500}
-          fallSpeed={3000}
+          fallSpeed={2000}
           fadeOut={true}/>)} 
          </View>
       </KeyboardAvoidingView>

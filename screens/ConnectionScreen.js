@@ -76,12 +76,6 @@ import { useNavigation } from '@react-navigation/native';
 <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <Image style={styles.image} source={require('../assets/logo.jpg')} />
-        {/* <View style={styles.containerRecap}>
-          <Text style={styles.title}>Nom de la soirée</Text>
-          <Text style={styles.titleW}>DADDY5</Text>
-          <Text style={styles.title}>Connection Spotify</Text>
-          <Text style={styles.titleW}>DJ YANKEE</Text>
-        </View> */}
         <View style={styles.containerButton}>
         <Text style={styles.title}>Connection Spotify</Text>
           <View style={styles.divider}></View>  
