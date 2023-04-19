@@ -196,6 +196,7 @@ export default function SuggestionScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.party}>
+        {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
           {user.isDj && Platform.OS === "ios" && suggestion.length !== 0 && (
             <Text style={styles.title}>Swipe 👈 ou 👉</Text>
           )}
@@ -276,7 +277,7 @@ export default function SuggestionScreen() {
                   <ListItem key={i} bottomDivider style={styles.listitem}>
                     {/* gestion swipe sur android */}
                     <View>
-                      {Platform.OS === "android" && (
+                      {user.isDj && Platform.OS === "android" && (
                         <View style={styles.androidButtonsContainer}>
                           <TouchableOpacity
                             onPress={() => {
@@ -290,7 +291,7 @@ export default function SuggestionScreen() {
                           <TouchableOpacity
                             onPress={() => {
                               deleteSuggestion(l);
-                            }}
+                            }} 
                           >
                             <View style={styles.androidButton}>
                               <Text style={styles.androidIconDown}>👎</Text>
