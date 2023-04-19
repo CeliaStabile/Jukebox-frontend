@@ -189,8 +189,9 @@ console.log('bien envoyé à la queue');
     <ImageBackground source={require('../assets/bg-screens.jpg')} style={styles.background}>
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.party}>
-      {!user.isDj && <Text style={styles.title}>Ajoute ton morceau !</Text>}
-      {user.isDj && <Text style={styles.title}>Swipe 👈 ou 👉</Text>}
+      {user.isDj && Platform.OS === 'ios'  && suggestion.length !== 0 &&<Text style={styles.title}>Swipe 👈 ou 👉</Text>}
+      {user.isDj && Platform.OS === 'android'  && suggestion.length !== 0 &&<Text style={styles.title}>👍 ou 👎 ? </Text>}
+      {user.isDj && suggestion.length === 0 && <Text style={styles.title}>Aucune suggestion 😒</Text>}
       </View>
 
       <View style={styles.contentdivider}>
@@ -256,11 +257,34 @@ console.log('bien envoyé à la queue');
                 onSwipeableRightOpen={() => { deleteSuggestion(l); }}
                                >
             <ListItem key={i} bottomDivider style={styles.listitem}>
-                <Avatar source={{uri: l.url_image}} />
+
+              {/* gestion swipe sur android */}
+            <View >
+                  {Platform.OS === 'android' && (
+                    <View style={styles.androidButtonsContainer}>
+                    <TouchableOpacity onPress={() => {
+                     addSong(l), deleteSuggestion(l) }}>
+                      <View style={styles.androidButton}>
+                        <Text style={styles.androidIconUp}>👍</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                     deleteSuggestion(l) 
+                      }}>
+                      <View style={styles.androidButton}>
+                        <Text style={styles.androidIconDown}>👎</Text>
+                      </View>
+                    </TouchableOpacity>
+                    </View>
+                    )}
+                </View>
+              <Avatar source={{uri: l.url_image}} />
                 <ListItem.Content style={styles.listcontent}>
-                <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
-                <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
+                  <ListItem.Title style={styles.listtitle}>{l.title}</ListItem.Title>
+                  <ListItem.Subtitle style={styles.listsubtitle}>{l.artist}</ListItem.Subtitle>
                 </ListItem.Content>
+
+
                 <TouchableOpacity onPress={()=> 
                   {if(personalLikes.includes(l.uri) && !user.isDj){
                   personalLikes.splice(l.uri, 1);
@@ -297,7 +321,6 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between'
     },
     party: {
-      // backgroundColor: 'red',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
@@ -310,7 +333,6 @@ const styles = StyleSheet.create({
       color: '#581B98',
     },
     searchbar: {
-      // backgroundColor: 'red',
       justifyContent: 'center',
       paddingLeft: 20,
       paddingRight: 20,
@@ -329,7 +351,8 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
     },
     listcontent: {
-      // backgroundColor: 'pink',
+      marginBottom: -15,
+      marginTop: -15,
     },
     listtitle: {
       color: '#1A1C1E',
@@ -357,8 +380,7 @@ const styles = StyleSheet.create({
     divider2:{
       borderBottomColor: '#F3558E',
       borderBottomWidth: 1,
-      marginBottom: 20,
-      // marginTop: 10,     
+      marginBottom: 20,   
       width: '70%',      
     },
     errorphrase: {
@@ -374,13 +396,12 @@ const styles = StyleSheet.create({
     },
     flatcontainer:{
       marginTop: StatusBar.currentHeight || 0,
-      // backgroundColor:'red',     
+  
     },
     flatlist:{
       backgroundColor:'#eee8f4',
       borderRadius: 30,
-      // borderColor: '#F3558E',
-      // borderWidth: 2,      
+    
     },
     flatsong:{
 
@@ -398,17 +419,24 @@ const styles = StyleSheet.create({
     },
     flatartist:{
       color: '#49454F',
-      // fontSize: 14,
-      // fontWeight: '400',
-      // marginBottom:30,
     },
     rightSwipeItem: {
       width: 1,
-
     },
     leftSwipeItem: {
       width: 1,
+    },
+    androidButtonsContainer: {
+      flexDirection: 'row', 
+      alignItems: 'center', 
+    },
+    androidIconUp: {
+      fontSize: 18,
+      paddingRight: 10,
+      marginRight: 5,
+    },
+    androidIconDown: {
+      fontSize: 18, 
     }
-    
   },
 );
