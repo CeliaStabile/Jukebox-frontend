@@ -28,7 +28,6 @@ export default function PlaylistScreen() {
   const backendUrl = "https://jukebox-backend.vercel.app";
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
-  const [suggestion, setSuggestion] = useState([]);
 
   //empêche les utilisateurs de retourner aux écrans de connexion une fois arrivés sur playlist
   useEffect(
@@ -167,11 +166,6 @@ export default function PlaylistScreen() {
     getQueue();
   }, [queueItems]);
 
-  useEffect(() => {
-    setSuggestion(user.suggestions);
-  }, [suggestion]);
-
-  
 
   // on refresh : vider database, refaire l'appel API spotify et réenregistrer.
   const onRefresh = React.useCallback(async () => {
@@ -266,9 +260,6 @@ export default function PlaylistScreen() {
                       {l.artist}
                     </ListItem.Subtitle>
                   </ListItem.Content>
-                  {suggestion.some((song) => song.title === l.title) && (
-                      <Text>⭐</Text>
-                      )}
                 </ListItem>
               ))}
             </View>
