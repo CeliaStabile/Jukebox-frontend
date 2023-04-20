@@ -28,6 +28,7 @@ export default function PlaylistScreen() {
   const backendUrl = "https://jukebox-backend.vercel.app";
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+  const [suggestion, setSuggestion] = useState([]);
 
   //empêche les utilisateurs de retourner aux écrans de connexion une fois arrivés sur playlist
   useEffect(
@@ -78,7 +79,7 @@ export default function PlaylistScreen() {
   }
 
   //déclaration de fonction pour copier la queue et le nowplaying fetchés à la database
-  async function updateDatabase() {
+  async function updateQueue() {
     if (resQueue.length > 0) {
       try {
         const queueResponse = await fetch(
@@ -95,8 +96,9 @@ export default function PlaylistScreen() {
       }
     } else {
       console.log("empty queue, nothing to send to database");
-    }
+    }}
 
+    async function updateNowplaying() {
     if (resNowPlaying !== "") {
       try {
         const nowPlayingResponse = await fetch(
@@ -124,11 +126,18 @@ export default function PlaylistScreen() {
   }, []);
 
   // uniquement si getAllSongs a répondu (a fait le fetch API spotify), faire l'appel au backend pour enregistrer en BDD
+  //tentative de split le updatedatabase en 2
   useEffect(() => {
     if (user.isDj) {
-      updateDatabase();
+      updateQueue();
     }
-  }, [resQueue, resNowPlaying]);
+  }, [resQueue]);
+
+  useEffect(() => {
+    if (user.isDj) {
+      updateNowplaying();
+    }
+  }, [resNowPlaying]);
 
   //déclaration de fonctions appel backend pour obtenir la queue et le nowPlaying
   function getQueue() {
@@ -149,14 +158,26 @@ export default function PlaylistScreen() {
 
   //A l'ouverture pour tout le monde : récupérer la BDD dans les états du composants pour pouvoir les afficher plus bas.
   // recommence à chaque fois qu'il y a un changement dans queueItems pour s'afficher quand on a bien récupéré la réponse du back
+ 
+  useEffect(() => {
+    getNowPlaying();
+  }, [nowPlaying]);
+ 
   useEffect(() => {
     getQueue();
-    getNowPlaying();
   }, [queueItems]);
+
+  useEffect(() => {
+    setSuggestion(user.suggestions);
+  }, [suggestion]);
+
+  
 
   // on refresh : vider database, refaire l'appel API spotify et réenregistrer.
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    setResQueue([]);
+    setNowPlaying('');
     try {
       if (user.isDj) {
         await fetch(`${backendUrl}/queue/queueitems/${user.partyName}`, {
@@ -166,7 +187,8 @@ export default function PlaylistScreen() {
           method: "DELETE",
         });
         await getAllSongs();
-        await updateDatabase();
+        await updateQueue();
+        await updateNowplaying();
       }
     } catch (error) {
       console.error(error);
