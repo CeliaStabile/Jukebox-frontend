@@ -159,6 +159,7 @@ export default function SuggestionScreen() {
         }
       );
       console.log("bien envoyé à la queue");
+      dispatch(addSuggestion(l))
     }
   }
 

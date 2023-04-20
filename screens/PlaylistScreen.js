@@ -266,6 +266,9 @@ export default function PlaylistScreen() {
                       {l.artist}
                     </ListItem.Subtitle>
                   </ListItem.Content>
+                  {suggestion.some((song) => song.title === l.title) && (
+                      <Text>⭐</Text>
+                      )}
                 </ListItem>
               ))}
             </View>
