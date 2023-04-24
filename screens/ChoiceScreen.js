@@ -16,8 +16,8 @@ import { djLog, getToken, getPartyName, logout } from "../reducers/user";
 
 export default function ChoiceScreen({ navigation }) {
   //ID spotify developer
-  const CLIENT_ID = "c6d8fa104582425a99c8ee0bc153f202";
-  const CLIENT_SECRET = "5c876fea03f1440995028805f694cf14";
+  const CLIENT_ID = "YOUR CLIENT ID";
+  const CLIENT_SECRET = "YOUR CLIENT SECRET";
 
   const user = useSelector((state) => state.user.value);
 
