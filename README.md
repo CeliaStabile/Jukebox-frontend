@@ -18,9 +18,3 @@ Backend Express Node.js, base de donnée MongoDB, lien GitHub : https://github.c
 ![Jukebox version commentée](https://user-images.githubusercontent.com/125277080/234065260-033a6d9f-863f-4608-bad9-6489a0093943.gif)
 
 
-
-## Déploiement Expo 
-
-Sur Android uniquement :
-
-https://expo.dev/@celias38/jukebox?serviceType=classic&distribution=expo-go
