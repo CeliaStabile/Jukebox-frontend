@@ -33,7 +33,7 @@ export default function ConnectionScreen({ navigation }) {
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
-      clientId: "db1242ce93da4429a427639434f2becd",
+      clientId: "yourClientID",
       scopes: [
         "user-read-currently-playing",
         "user-read-recently-played",
@@ -45,7 +45,7 @@ export default function ConnectionScreen({ navigation }) {
         "user-read-private",
       ],
       usePKCE: false,
-      redirectUri: "exp://192.168.43.212:19000",
+      redirectUri: "yourRedirectURI",
     },
     discovery
   );
